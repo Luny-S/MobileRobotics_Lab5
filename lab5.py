@@ -77,3 +77,5 @@ if __name__ == '__main__':
 	wm.update_map(0,0,1.0)
 	for row in wm.update_map(-1,2,1.0).mapa:
 		print row
+
+

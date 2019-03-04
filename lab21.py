@@ -20,21 +20,6 @@ outputPath = "./output/"
 inputPath = "./datafiles/"
 
 
-def pol2cart(rho, phi, ang=0):
-    if rho == 0:
-        return (0, 0)
-    else:
-        x = rho * math.cos(phi + ang);
-        y = rho * math.sin(phi + ang);
-    return [x, y]
-
-
-def cart2pol(x, y):
-    r = math.sqrt(x ** 2 + y ** 2)
-    phi = math.atan2(y, x)
-    return [r, phi]
-
-
 def readJSON(filename):
     json_file = open(filename)
     data = json.load(json_file)
@@ -66,11 +51,11 @@ def convertDataToGlobalCoordinates(data):
 
 
 if __name__ == '__main__':
-	wm=world_map(7,7,0.5)
-    for row in wm.initialize_map():
+    wm=world_map(7,7,0.5)
+    for row in wm.initialize_map().mapa:
         print row
 
-    for row in wm.update_map(0,0,1.0):
+    for row in wm.update_map(0,0,1.0).mapa:
         print row
 
     data = readJSON(inputPath + "map_boxes_0.json")
