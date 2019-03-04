@@ -57,7 +57,7 @@ def convertDataToGlobalCoordinates(data):
 
 
 if __name__ == '__main__':
-    wm=world_map(16,16,0.1)
+    wm=world_map(16,15,0.1)
     wm.initialize_map()
 
 
@@ -70,14 +70,18 @@ if __name__ == '__main__':
     for iter in pointsHit:
         wm.updateHitCells(iter)
 
-    mapa = np.asarray(wm.mapa, dtype=np.float32)
+    wm.updateProbabilityMap()
+    mapa = np.asarray(wm.probabilityMap, dtype=np.float32)
+
+
+
 
     # TODO Skalowanie mapy z indeksow na wlasciwe koordynaty
     # TODO Wyswietlanie prawdopodobienstwa, a nie wartosci logarytmu
     # TODO Obsluzenie wielu iteracji
-    # TODO Przejrzeć przetwarzanie danych, bo coś nie pasuje z wartosciami. Sa jakby ucinane
+    # TODO Przejrzec przetwarzanie danych, bo cos nie pasuje z wartosciami. Sa jakby ucinane
 
-    saveJSON(outputPath + "temp.JSON", wm.mapa)
+    # saveJSON(outputPath + "temp.JSON", wm.mapa)
 
     plt.imshow(mapa, interpolation="nearest", cmap='Blues')
     plt.colorbar()
