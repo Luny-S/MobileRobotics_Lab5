@@ -69,15 +69,11 @@ def lab21():
 
     saveJSON(outputPath + "temp.JSON", pointsHit)
 
-
-
-
     print "Lenght of sublists in each iteration: "
     print len(pointsHit[0])
     print len(pointsHit[1])
     print len(pointsHit[2])
     print len(pointsHit[3])
-
 
     # scan=robot.ReadLaser()
 
