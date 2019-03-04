@@ -4,6 +4,7 @@ class world_map:
 	cell_size=1
 	world_longitude=0
 	world_latitude=0
+	initialLog=0
 	mapa=[]
 
 	def __init__(self, longitude, latitude, cell_size):	
@@ -21,6 +22,7 @@ class world_map:
 		initialProbabilityHit = 0.5
 		initialProbabilityMiss = 1 - initialProbabilityHit
 		value = math.log(initialProbabilityHit/initialProbabilityMiss)
+		self.initialLog = value
 		self.mapa=[]
 		for i in range(int(math.ceil(self.world_longitude/self.cell_size))):
 			row=[]
@@ -49,33 +51,24 @@ class world_map:
 
 		longitude=int(math.floor((self.world_longitude/2+y)/self.cell_size))
 		latitude=int(math.floor((self.world_latitude/2+x)/self.cell_size))
+
 		return self.mapa[longitude][latitude]
 	
 	def getProbability(self, coordinates):
 		return 1 - 1/(1+math.exp(self.getCell(coordinates[0],coordinates[1])))
 		
-	def inverseSensorModel():
+	def inverseSensorModel(self):
 		scannerTrust = 0.9
 		scannerDoubt = 1 - scannerTrust
-		return log(scannerDoubt/sannerTrust)
+		return math.log(scannerTrust/scannerDoubt)
 		
-	def measurementInPerceptionField(iMeasurement):
+	def measurementInPerceptionField(self, iMeasurement):
 		return True
 		
 	def updateHitCells(self, measurements):
+
+
 		for iMeasurement in measurements:
 			if self.measurementInPerceptionField(iMeasurement):
-				LogValue = self.get_cell(iMeasurement[0], iMeasurement[1]) + self.inverseSensorModel() - initialLog
+				logValue = self.get_cell(iMeasurement[0], iMeasurement[1]) + self.inverseSensorModel() - self.initialLog
 				self.update_map(iMeasurement[0], iMeasurement[1], logValue)
-
-
-if __name__ == '__main__':
-	wm=world_map(7,7,0.5)
-	for row in wm.initialize_map().mapa:
-		print row
-	print("dupa")
-	wm.update_map(0,0,1.0)
-	for row in wm.update_map(-1,2,1.0).mapa:
-		print row
-
-
