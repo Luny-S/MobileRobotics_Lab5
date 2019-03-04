@@ -6,13 +6,9 @@ import json
 # robot=RosAriaDriver('/PIONIER6')
 
 import matplotlib.pyplot as plt
-import numpy as np
-import random
 import sys
 
-import scipy
-from scipy.optimize import fmin_cg
-from copy import deepcopy
+from lab5 import world_map
 
 scan = []
 theta = []
@@ -91,4 +87,10 @@ def lab21():
 
 
 if __name__ == '__main__':
-    lab21()
+	wm=world_map(7,7,0.5)
+	for row in wm.initialize_map():
+		print row
+	
+	for row in wm.update_map(0,0,1.0):
+		print row
+    	lab21()
