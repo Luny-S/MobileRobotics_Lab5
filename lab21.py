@@ -1,5 +1,5 @@
 from time import sleep
-# from drive import RosAriaDriver
+from drive import RosAriaDriver
 import math
 import json
 
@@ -63,7 +63,6 @@ if __name__ == '__main__':
     wm.initialize_map()
 
     # data = readJSON(inputPath + "map_round.json")
-
 
     iter['pose'] = robot.GetPose()
     iter['scan'] = robot.ReadLaser()
