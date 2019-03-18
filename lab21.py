@@ -61,9 +61,11 @@ def convertDataToGlobalCoordinates(data):
 def robotScanData():
     data = []
     for i in range(10):
-        data[i]['pose'] = robot.GetPose()
-        data[i]['scan'] = robot.ReadLaser()
+        dataPoint = []
+        dataPoint['pose'] = robot.GetPose()
+        dataPoint['scan'] = robot.ReadLaser()
         robotScanData(outputPath + "pointsHit.JSON", pointsHit)
+        data.append(dataPoint)
         time.sleep(5)
 
     saveJSON(outputPath + "pointsHit.JSON", data)
