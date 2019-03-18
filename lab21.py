@@ -3,7 +3,7 @@ from time import sleep
 import math
 import json
 
-# robot=RosAriaDriver('/PIONIER6')
+robot=RosAriaDriver('/PIONIER6')
 
 import matplotlib.pyplot as plt
 import sys
@@ -41,8 +41,10 @@ def convertDataToGlobalCoordinates(data):
 
     for iteration in data:
         pointsHitTemp = list()
+
+        iteration['pose'][2] = np.deg2rad(iteration['pose'][2])
+
         for scanIndex in range(len(iteration['scan'])):
-            iteration['pose'][2] = math.radians(iteration['pose'][2])
 
             if not np.isinf(iteration['scan'][scanIndex]) and not np.isnan(iteration['scan'][scanIndex]):
                 scanPointX = iteration['pose'][0] + 0.18 * math.cos(iteration['pose'][2]) + iteration['scan'][
@@ -60,9 +62,15 @@ if __name__ == '__main__':
     wm=world_map(16,16,0.1)
     wm.initialize_map()
 
-    data = readJSON(inputPath + "map_round.json")
-    poses = [item['pose'] for item in data]
+    # data = readJSON(inputPath + "map_round.json")
 
+
+    iter['pose'] = robot.GetPose()
+    iter['scan'] = robot.ReadLaser()
+    # poses = [item['pose'] for item in data]
+
+
+    exit(0)
 
     pointsHit = convertDataToGlobalCoordinates(data)
 
@@ -72,6 +80,11 @@ if __name__ == '__main__':
 
     # for iter in pointsHit:
     #     wm.updateHitCells(iter)
+
+
+    # for iter in pointsHit:
+    #     wm.updateHitCells(iter)
+
 
     wm.updateHitCells(pointsHit[0])
     wm.updateHitCells(pointsHit[1])
