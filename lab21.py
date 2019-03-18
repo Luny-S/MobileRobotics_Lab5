@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+import time
 
 
 from lab5 import world_map
@@ -57,6 +58,16 @@ def convertDataToGlobalCoordinates(data):
     return pointsHit
 
 
+def robotScanData():
+    data = []
+    for i in range(10):
+        data[i]['pose'] = robot.GetPose()
+        data[i]['scan'] = robot.ReadLaser()
+        robotScanData(outputPath + "pointsHit.JSON", pointsHit)
+        time.sleep(5)
+
+    saveJSON(outputPath + "pointsHit.JSON", data)
+
 
 if __name__ == '__main__':
     wm=world_map(16,16,0.1)
@@ -64,12 +75,11 @@ if __name__ == '__main__':
 
     # data = readJSON(inputPath + "map_round.json")
 
-    iter['pose'] = robot.GetPose()
-    iter['scan'] = robot.ReadLaser()
+    robotScanData()
+    exit(0)
     # poses = [item['pose'] for item in data]
 
 
-    exit(0)
 
     pointsHit = convertDataToGlobalCoordinates(data)
 
