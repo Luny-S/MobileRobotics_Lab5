@@ -211,12 +211,13 @@ class world_map:
             beam = np.polyfit([sensorPosition[0], globalPoint[0]], [sensorPosition[1], globalPoint[1]], 1)
             beamAlpha = math.atan2(beam[0], 1)
             dPos = ["", ""]  # direction of iteration through cells on thupdateHitCellse map
-            if beamAlpha < 0:
+            # if beamAlpha < 0:
+            if globalPoint[0] < sensorPosition[0]:
                 dPos[0] = -1
             else:
                 dPos[0] = 1
 
-            if globalPoint[1] > sensorPosition[1]:
+            if globalPoint[1] >= sensorPosition[1]:
                 dPos[1] = 1
             else:
                 dPos[1] = -1

@@ -48,8 +48,10 @@ if __name__ == '__main__':
     wm = world_map(20, 20, 0.25)
     wm.initialize_map()
 
-    # data = readJSON(inputPath + "robotWandering_01.JSON")
-    data = readJSON(inputPath + "map_boxes_0.json")
+    data = readJSON(inputPath + "robotWandering_01.JSON")
+    # data = readJSON(inputPath + "map_boxes_0.json")
+    # data = readJSON(inputPath + "map_boxes_1.json")
+    # data = readJSON(inputPath + "map_round.json")
     # saveJSON(outputPath + "pointsHitGlobal.JSON", pointsHitGlobal)
 
     for iteration in data:
