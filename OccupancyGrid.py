@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# from drive import RosAriaDriver
-# robot=RosAriaDriver('/PIONIER6')
+from drive import RosAriaDriver
+robot=RosAriaDriver('/PIONIER6')
 
 import math
 import json
@@ -34,7 +34,7 @@ def saveJSON(filename, data):
 
 def robotScanData():
     data = []
-    for i in range(10):
+    for i in range(6):
         dataPoint = {}
         dataPoint['pose'] = robot.GetPose()
         dataPoint['scan'] = robot.ReadLaser()
@@ -48,7 +48,11 @@ if __name__ == '__main__':
     wm = world_map(20, 20, 0.25)
     wm.initialize_map()
 
-    data = readJSON(inputPath + "robotWandering_01.JSON")
+    robotScanData()
+
+    exit(0)
+
+    data = readJSON(inputPath + "robotScanRotating_02.JSON")
     # data = readJSON(inputPath + "map_boxes_0.json")
     # data = readJSON(inputPath + "map_boxes_1.json")
     # data = readJSON(inputPath + "map_round.json")

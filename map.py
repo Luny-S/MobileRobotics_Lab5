@@ -3,6 +3,9 @@
 
 import math
 import numpy as np
+
+np.seterr(divide='ignore', invalid='ignore')
+
 import json
 
 
@@ -20,7 +23,8 @@ class world_map:
     mapa = []
     probabilityMap = []
 
-    def __init__(self, longitude, latitude, cell_size):
+    def __init__(self, longitude, latitude, \
+                 cell_size):
         # constructor intializes class with basic info about world
         # [in] longitude - world longitude in physical units e.g. 10m
         # [in] latitude - world latitude in physical units e.g. 5m
@@ -51,7 +55,7 @@ class world_map:
             self.probabilityMap.append(rowProb)
         return self
 
-    def update_map(self, x, y, value, isIndex = False):
+    def update_map(self, x, y, value, isIndex=False):
         # function updating map with given value at given position
         # [in] x - latitude in robot coordinates e.g -21
         # [in] y - longitude in robot coordinates e.g .37
@@ -207,51 +211,54 @@ class world_map:
             key = str(fix) + "." + str(fiy)
             pathPoints[key] = 1
 
-            # while not lastPoint:
-            beam = np.polyfit([sensorPosition[0], globalPoint[0]], [sensorPosition[1], globalPoint[1]], 1)
-            beamAlpha = math.atan2(beam[0], 1)
-            dPos = ["", ""]  # direction of iteration through cells on thupdateHitCellse map
-            # if beamAlpha < 0:
-            if globalPoint[0] < sensorPosition[0]:
-                dPos[0] = -1
-            else:
-                dPos[0] = 1
+            try:
+                beam = np.polyfit([sensorPosition[0], globalPoint[0]], [sensorPosition[1], globalPoint[1]], 1)
+                dPos = ["", ""]  # direction of iteration through cells on thupdateHitCellse map
 
-            if globalPoint[1] >= sensorPosition[1]:
-                dPos[1] = 1
-            else:
-                dPos[1] = -1
-
-            tempPoint = list(point)
-            while tempPoint[0] != fix or tempPoint[1] != fiy:
-                tempPoint = list(point)
-                tempPoint[0] += dPos[0]
-                ifHit = self.checkLineCellIntersect(tempPoint, beam)
-                if ifHit is False:
-                    tempPoint = list(point)
-                    tempPoint[1] += dPos[1]
-                    ifHit = self.checkLineCellIntersect(tempPoint, beam)
-
-                if ifHit is True:
-                    point = list(tempPoint)
-                    key = str(tempPoint[0]) + "." + str(tempPoint[1])
-                    if key not in pathPoints:
-                        pathPoints[key] = 0
+                if globalPoint[0] < sensorPosition[0]:
+                    dPos[0] = -1
                 else:
-                    if self.debug:
-                        print "Solution not found after point : "
-                        print point
-                        print "For global point : "
-                        print globalPoint
-                        print [fix, fiy]
-                        print "And sensor position : "
-                        print sensorPosition
-                    break
-                    # exit(0)
+                    dPos[0] = 1
+
+                if globalPoint[1] >= sensorPosition[1]:
+                    dPos[1] = 1
+                else:
+                    dPos[1] = -1
+
+                tempPoint = list(point)
+                while tempPoint[0] != fix or tempPoint[1] != fiy:
+                    tempPoint = list(point)
+                    tempPoint[0] += dPos[0]
+                    ifHit = self.checkLineCellIntersect(tempPoint, beam)
+                    if ifHit is False:
+                        tempPoint = list(point)
+                        tempPoint[1] += dPos[1]
+                        ifHit = self.checkLineCellIntersect(tempPoint, beam)
+
+                    if ifHit is True:
+                        point = list(tempPoint)
+                        key = str(tempPoint[0]) + "." + str(tempPoint[1])
+                        if key not in pathPoints:
+                            pathPoints[key] = 0
+                    else:
+                        if self.debug:
+                            print "Solution not found after point : "
+                            print point
+                            print "For global point : "
+                            print globalPoint
+                            print [fix, fiy]
+                            print "And sensor position : "
+                            print sensorPosition
+                        break
+
+            except np.linalg.linalg.LinAlgError as error:
+                if self.debug:
+                    print "Algebra error"
 
         for key, value in pathPoints.iteritems():
             pIndex = key.split('.')
-            logValue = self.get_cell(int(pIndex[0]), int(pIndex[1]), True) + self.inverseSensorModel(value) - self.initialLog
+            logValue = self.get_cell(int(pIndex[0]), int(pIndex[1]), True) + self.inverseSensorModel(
+                value) - self.initialLog
             self.update_map(int(pIndex[0]), int(pIndex[1]), logValue, True)
 
         return True
