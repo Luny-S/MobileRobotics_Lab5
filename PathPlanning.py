@@ -9,43 +9,43 @@ import time
 from map import world_map
 
 # TODO
-# 1. Create wave that assigns numbers to map
-# 2. Generate path as list of cells to pass through
+# 1. Create wave that assigns numbers to map (/)
+# 2. Generate path as list of cells to pass through (check previous direction)
 # 3. Enlarge obstacles
 # 3. optimize cell visiting
 # 4*. Diagonal movement
 # 5*. Some crazy shit
 
 
-#obstacles = "-inf"
+#obstacles = "inf"
 #goal = "NaN"
-#start = "inf"
+#start = "-inf"
 #initial = 0
 
 probabilityThreshold = 0.75
 
-def updatePoint(Map,Point, iteration, probabilityMap):
-	if(Point[0]>=0 and Point[0]<Map.world_latitude and \
-	   Point[1]>=0 and Point[1]<Map.world_longitude):
+def updatePoint(Map,Point, iteration, futurePointList, probabilityMap):
+	if(Point[0]>=-Map.world_latitude/2 and Point[0]<Map.world_latitude/2 and \
+	   Point[1]>=-Map.world_latitude/2 and Point[1]<Map.world_longitude/2):
 		if(probabilityMap.getProbability([Point[0],Point[1]]) >= probabilityThreshold):
-			Map.update_map(Point[0],Point[1],float("-inf"))
+			Map.update_map(Point[0],Point[1],float("inf"))
 		else:
-			if(Map.get_cell(Point[0],Point[1]) == 0):
+			if(Map.get_cell(Point[0],Point[1]) == 0 or Map.get_cell(Point[0],Point[1]) == float("-inf")):
 				Map.update_map(Point[0], Point[1], iteration)
+				futurePointList.append([Point[0],Point[1]])
 
 def updateNeighbours(Map,currentPoint,iteration, futurePointList, probabilityMap):
-	updatePoint(Map,[currentPoint[0]-1, currentPoint[1]], iteration, probabilityMap)
-	futurePointList.append([currentPoint[0]-1,currentPoint[1]])
+	updatePoint(Map,[currentPoint[0]-1, currentPoint[1]], iteration,futurePointList, probabilityMap)
+	updatePoint(Map,[currentPoint[0]+1, currentPoint[1]], iteration,futurePointList, probabilityMap)
+	updatePoint(Map,[currentPoint[0], currentPoint[1]-1], iteration,futurePointList, probabilityMap)
+	updatePoint(Map,[currentPoint[0], currentPoint[1]+1], iteration,futurePointList, probabilityMap)
 
-	updatePoint(Map,[currentPoint[0]+1, currentPoint[1]], iteration, probabilityMap)
-	futurePointList.append([currentPoint[0]+1,currentPoint[1]])
 
-	updatePoint(Map,[currentPoint[0], currentPoint[1]-1], iteration, probabilityMap)
-	futurePointList.append([currentPoint[0],currentPoint[1]-1])
-
-	updatePoint(Map,[currentPoint[0], currentPoint[1]+1], iteration, probabilityMap)
-	futurePointList.append([currentPoint[0],currentPoint[1]+1])
-
+def startFound(goalDistanceMap, currentPointList, startPoint):
+	for currentPoint in currentPointList:
+		if(currentPoint[0] == startPoint[0] and currentPoint[1] == startPoint[1]):
+			return True
+	return False
 
 def blastWave(probabilityMap, startPoint, goalPoint):
 	goalDistanceMap = world_map(probabilityMap.world_latitude, \
@@ -53,7 +53,7 @@ def blastWave(probabilityMap, startPoint, goalPoint):
                                    probabilityMap.cell_size)
 	goalDistanceMap.initialize_map()
 	
-	goalDistanceMap.update_map(startPoint[0], startPoint[1], float("inf"))
+	goalDistanceMap.update_map(startPoint[0], startPoint[1], float("-inf"))
 	goalDistanceMap.update_map(goalPoint[0], goalPoint[1], float("NaN"))
 	
 	currentPointList = []
@@ -63,11 +63,18 @@ def blastWave(probabilityMap, startPoint, goalPoint):
 
 	iteration = 1
 
-	for currentPoint in currentPointList:
-		updateNeighbours(goalDistanceMap,currentPoint,iteration, futurePointList, probabilityMap)
+	while (not startFound(goalDistanceMap, currentPointList, startPoint)):
+		for currentPoint in currentPointList:
+			updateNeighbours(goalDistanceMap,currentPoint,iteration, futurePointList, probabilityMap)
+		iteration += 1
+		currentPointList = futurePointList
+		futurePointList = []
+		print futurePointList
+		print currentPointList
+		raw_input("Press Enter to continue...")
 
-	print futurePointList
-	
+	goalDistanceMap.update_map(startPoint[0], startPoint[1], iteration)
+	goalDistanceMap.update_map(goalPoint[0], goalPoint[1], 0)
 	return goalDistanceMap
 
 def planPath(goalDistanceMap):
@@ -92,6 +99,8 @@ if __name__ == '__main__':
 
     WaveMap = blastWave(wm, [0,0], [1,3])
     
+    print WaveMap.get_cell(2,2)
+
     mapa = np.asarray(WaveMap.mapa[::-1], dtype=np.float32)
 
     # Podczas skanowania w ruchu mogą pojawić się opóźnienia między getPose,a getScan, więć mapa może się troche rozjechac.
