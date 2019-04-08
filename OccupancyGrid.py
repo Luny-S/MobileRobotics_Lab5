@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from drive import RosAriaDriver
-robot=RosAriaDriver('/PIONIER6')
+#from drive import RosAriaDriver
+#robot=RosAriaDriver('/PIONIER6')
 
 import math
 import json

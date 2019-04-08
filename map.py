@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 import math
 import numpy as np
 
 np.seterr(divide='ignore', invalid='ignore')
-
-import json
 
 
 # latitude - szerokość - x
@@ -17,13 +16,13 @@ class world_map:
     cell_size = 1
     world_longitude = 0
     world_latitude = 0
-    initialProbability = 0;
+    initialProbability = 0
     initialLog = 0
     debug = False
     mapa = []
     probabilityMap = []
 
-    def __init__(self, longitude, latitude, \
+    def __init__(self, longitude, latitude,
                  cell_size):
         # constructor intializes class with basic info about world
         # [in] longitude - world longitude in physical units e.g. 10m
@@ -55,6 +54,11 @@ class world_map:
             self.probabilityMap.append(rowProb)
         return self
 
+    def updateWholeMap(self, value):
+        for mapRow in self.mapa:
+            for i in range(0, len(mapRow)):
+                mapRow[i] = value
+
     def update_map(self, x, y, value, isIndex=False):
         # function updating map with given value at given position
         # [in] x - latitude in robot coordinates e.g -21
@@ -83,7 +87,8 @@ class world_map:
             return self.mapa[index[0]][index[1]]
 
     def get_cell_index(self, x, y):
-        longitude = int(round((self.world_longitude / 2.0 + y) / self.cell_size))
+        longitude = int(
+            round((self.world_longitude / 2.0 + y) / self.cell_size))
         latitude = int(round((self.world_latitude / 2.0 + x) / self.cell_size))
         return [latitude, longitude]
 
@@ -104,12 +109,13 @@ class world_map:
     def updateProbabilityMap(self):
         for latitude in range(len(self.probabilityMap)):
             for longitude in range(len(self.probabilityMap[latitude])):
-                self.probabilityMap[latitude][longitude] = self.logToProbability(self.mapa[latitude][longitude]);
+                self.probabilityMap[latitude][longitude] = self.logToProbability(
+                    self.mapa[latitude][longitude])
         return self
 
     def inverseSensorModel(self, hit=1):
         prob = 0
-        scannerDoubt = 0.1;
+        scannerDoubt = 0.1
         if (hit == 1):
             prob = 1 - scannerDoubt
         else:
@@ -134,11 +140,11 @@ class world_map:
             # localHitTemp.append([theta[scanIndex], iteration['scan'][scanIndex]])
             if not np.isinf(scanData[scanIndex][1]) and not np.isnan(scanData[scanIndex][1]):
                 scanPointX = robotPosition[1] + \
-                             scanData[scanIndex][1] * math.sin(robotPosition[2] + scanData[scanIndex][0]) + \
-                             0.18 * math.sin(robotPosition[2])
+                    scanData[scanIndex][1] * math.sin(robotPosition[2] + scanData[scanIndex][0]) + \
+                    0.18 * math.sin(robotPosition[2])
                 scanPointY = robotPosition[0] + \
-                             scanData[scanIndex][1] * math.cos(robotPosition[2] + scanData[scanIndex][0]) + \
-                             0.18 * math.cos(robotPosition[2])
+                    scanData[scanIndex][1] * math.cos(robotPosition[2] + scanData[scanIndex][0]) + \
+                    0.18 * math.cos(robotPosition[2])
 
                 scanPointX = -scanPointX
                 pointsHitGlobal.append([scanPointX, scanPointY])
@@ -173,7 +179,7 @@ class world_map:
                     break
             except np.linalg.linalg.LinAlgError as error:
                 if self.debug:
-                    print "Algebra error"
+                    print("Algebra error")
 
         return False
         # if all(x is False for x in intersects):
@@ -204,16 +210,20 @@ class world_map:
 
         for globalPoint in globalPoints:
             # path from sensorPosition to globalPoint
-            fix, fiy = self.get_cell_index(globalPoint[0], globalPoint[1])  # final point indexes
-            six, siy = self.get_cell_index(sensorPosition[0], sensorPosition[1])  # sensor position indexes
+            fix, fiy = self.get_cell_index(
+                globalPoint[0], globalPoint[1])  # final point indexes
+            six, siy = self.get_cell_index(
+                sensorPosition[0], sensorPosition[1])  # sensor position indexes
             point = [six, siy]
 
             key = str(fix) + "." + str(fiy)
             pathPoints[key] = 1
 
             try:
-                beam = np.polyfit([sensorPosition[0], globalPoint[0]], [sensorPosition[1], globalPoint[1]], 1)
-                dPos = ["", ""]  # direction of iteration through cells on thupdateHitCellse map
+                beam = np.polyfit([sensorPosition[0], globalPoint[0]], [
+                                  sensorPosition[1], globalPoint[1]], 1)
+                # direction of iteration through cells on thupdateHitCellse map
+                dPos = ["", ""]
 
                 if globalPoint[0] < sensorPosition[0]:
                     dPos[0] = -1
@@ -242,18 +252,18 @@ class world_map:
                             pathPoints[key] = 0
                     else:
                         if self.debug:
-                            print "Solution not found after point : "
-                            print point
-                            print "For global point : "
-                            print globalPoint
-                            print [fix, fiy]
-                            print "And sensor position : "
-                            print sensorPosition
+                            print("Solution not found after point : ")
+                            print(point)
+                            print("For global point : ")
+                            print(globalPoint)
+                            print([fix, fiy])
+                            print("And sensor position : ")
+                            print(sensorPosition)
                         break
 
             except np.linalg.linalg.LinAlgError as error:
                 if self.debug:
-                    print "Algebra error"
+                    print ("Algebra error")
 
         for key, value in pathPoints.iteritems():
             pIndex = key.split('.')
