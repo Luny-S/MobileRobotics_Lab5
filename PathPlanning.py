@@ -11,10 +11,10 @@ from map import world_map
 
 # TODO
 # 1. Create wave that assigns numbers to map (/)
-# 2. Generate path as list of cells to pass through (check previous direction)
+# 2. Generate path as list of cells to pass through (check previous direction) (/)
 # 3. Enlarge obstacles
 # 3. optimize cell visiting
-# 4*. Diagonal movement
+# 4*. Diagonal movement (/)
 # 5*. Some crazy shit
 
 
@@ -28,6 +28,8 @@ probabilityThreshold = 0.75
 class direction(enum.Enum):
 	vertical = 0
 	horizontal = 1
+	slash = 2
+	backslash = 3
 
 def updatePoint(Map, Point, iteration, futurePointList, probabilityMap):
 	if(Point[0] >= -Map.world_latitude/2 and Point[0] < Map.world_latitude/2 and
@@ -87,7 +89,7 @@ def blastWave(probabilityMap, startPoint, goalPoint):
 	goalDistanceMap.update_map(goalPoint[0], goalPoint[1], 0)
 	return goalDistanceMap
 
-def chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection):
+def chooseNeighbourOrthogonal(goalDistanceMap, currentPoint, preferredDirection):
 	chosenNeighbour = []
 	currentCell = goalDistanceMap.get_cell(currentPoint[0], currentPoint[1])
 	leftNeighbour = goalDistanceMap.get_cell(currentPoint[0]-1, currentPoint[1])
@@ -96,34 +98,101 @@ def chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection):
 	topNeighbour = goalDistanceMap.get_cell(currentPoint[0], currentPoint[1]+1)
 	
 	if(preferredDirection == direction.vertical):
-		if(bottomNeighbour <= currentCell - 1):
+		if(bottomNeighbour < currentCell):
 			chosenNeighbour = [currentPoint[0], currentPoint[1]-1]
 			preferredDirection = direction.vertical
-		elif(topNeighbour <= currentCell - 1):
+		elif(topNeighbour < currentCell):
 			chosenNeighbour = [currentPoint[0], currentPoint[1]+1]
 			preferredDirection = direction.vertical
 		else:
-			if(leftNeighbour <= currentCell - 1):
+			if(leftNeighbour < currentCell):
 				chosenNeighbour = [currentPoint[0]-1, currentPoint[1]]
 				preferredDirection = direction.horizontal
-			elif(rightNeighbour <= currentCell - 1):
+			elif(rightNeighbour < currentCell):
 				chosenNeighbour = [currentPoint[0]+1, currentPoint[1]]
 				preferredDirection = direction.horizontal
 	else:
-		if(leftNeighbour <= currentCell - 1):
+		if(leftNeighbour < currentCell):
 			chosenNeighbour = [currentPoint[0]-1, currentPoint[1]]
 			preferredDirection = direction.horizontal
-		elif(rightNeighbour <= currentCell - 1):
+		elif(rightNeighbour < currentCell):
 			chosenNeighbour = [currentPoint[0]+1, currentPoint[1]]
 			preferredDirection = direction.horizontal
 		else:
-			if(bottomNeighbour <= currentCell - 1):
+			if(bottomNeighbour < currentCell):
 				chosenNeighbour = [currentPoint[0], currentPoint[1]-1]
 				preferredDirection = direction.vertical
-			elif(topNeighbour <= currentCell - 1):
+			elif(topNeighbour < currentCell):
 				chosenNeighbour = [currentPoint[0], currentPoint[1]+1]
 				preferredDirection = direction.vertical
 	return chosenNeighbour, preferredDirection
+
+def chooseNeighbourDiagonal(goalDistanceMap, currentPoint, preferredDirection):
+	chosenNeighbour = []
+	currentCell = goalDistanceMap.get_cell(currentPoint[0], currentPoint[1])
+	topleftNeighbour = goalDistanceMap.get_cell(currentPoint[0]-1, currentPoint[1]+1)
+	toprightNeighbour = goalDistanceMap.get_cell(currentPoint[0]+1, currentPoint[1]+1)
+	bottomleftNeighbour = goalDistanceMap.get_cell(currentPoint[0]-1, currentPoint[1]-1)
+	bottomrightNeighbour = goalDistanceMap.get_cell(currentPoint[0]+1, currentPoint[1]-1)
+	if(preferredDirection == direction.slash):
+		if(bottomleftNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]-1, currentPoint[1]-1]
+			preferredDirection = direction.slash
+		elif(toprightNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]+1, currentPoint[1]+1]
+			preferredDirection = direction.slash
+		else:
+			if(bottomrightNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]+1, currentPoint[1]-1]
+				preferredDirection = direction.backslash
+			elif(topleftNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]-1, currentPoint[1]+1]
+				preferredDirection = direction.backslash
+	elif(preferredDirection == direction.backslash):
+		if(bottomrightNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]+1, currentPoint[1]-1]
+			preferredDirection = direction.backslash
+		elif(topleftNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]-1, currentPoint[1]+1]
+			preferredDirection = direction.backslash
+		else:
+			if(bottomleftNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]-1, currentPoint[1]-1]
+				preferredDirection = direction.slash
+			elif(toprightNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]+1, currentPoint[1]+1]
+				preferredDirection = direction.slash
+	else:
+		if(bottomleftNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]-1, currentPoint[1]-1]
+			preferredDirection = direction.slash
+		elif(toprightNeighbour < currentCell):
+			chosenNeighbour = [currentPoint[0]+1, currentPoint[1]+1]
+			preferredDirection = direction.slash
+		else:
+			if(bottomrightNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]+1, currentPoint[1]-1]
+				preferredDirection = direction.backslash
+			elif(topleftNeighbour < currentCell):
+				chosenNeighbour = [currentPoint[0]-1, currentPoint[1]+1]
+				preferredDirection = direction.backslash
+	return chosenNeighbour, preferredDirection
+
+def chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection):
+	chosenNeighbour = []
+
+	chosenNeighbourDiagonal, preferredDirectionDiagonal = chooseNeighbourDiagonal(goalDistanceMap, currentPoint, preferredDirection)
+	chosenNeighbourOrthogonal, preferredDirectionOrthogonal = chooseNeighbourOrthogonal(goalDistanceMap, currentPoint, preferredDirection)
+
+	if(not chosenNeighbourDiagonal):
+		return chosenNeighbourOrthogonal, preferredDirectionOrthogonal
+	if(not chosenNeighbourOrthogonal):
+		return chosenNeighbourDiagonal, preferredDirectionDiagonal
+
+	if(goalDistanceMap.get_cell(chosenNeighbourDiagonal[0],chosenNeighbourDiagonal[1]) <= goalDistanceMap.get_cell(chosenNeighbourOrthogonal[0],chosenNeighbourOrthogonal[1])):
+		return chosenNeighbourDiagonal, preferredDirectionDiagonal
+	else:
+		return chosenNeighbourOrthogonal, preferredDirectionOrthogonal
 
 def findPathPoints(goalDistanceMap, startPoint, goalPoint):
 	pathPoints = []
@@ -148,8 +217,6 @@ def planPath(pathPoints):
 
 
 def plotWavePath(WaveMap, pathPoints):
-	print(WaveMap.mapa)
-	print(pathPoints)
 	fig = plt.figure()
 	for i in range(0, len(WaveMap.mapa)):
 		for j in range(0, len(WaveMap.mapa[0])):
@@ -190,6 +257,9 @@ if __name__ == '__main__':
 	wm.update_map(-3, 4, 10)
 	wm.update_map(-3, 5, 10)
 	wm.update_map(-3, 6, 10)
+
+	wm.update_map(-4, -1, 10)
+	wm.update_map(-4, -2, 10)
 
 	wm.update_map(-9, 4, 10)
 	wm.update_map(-9, 3, 10)
