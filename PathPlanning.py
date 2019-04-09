@@ -217,7 +217,7 @@ def planPath(pathPoints):
 
 
 def plotWavePath(WaveMap, pathPoints):
-	fig = plt.figure()
+	fig = plt.figure(figsize=(8,8))
 	for i in range(0, len(WaveMap.mapa)):
 		for j in range(0, len(WaveMap.mapa[0])):
 			point = WaveMap.get_cell_coords(i,j)
@@ -232,7 +232,7 @@ def plotWavePath(WaveMap, pathPoints):
 				pointValue = float(pointValue) / WaveMap.world_latitude
 				color = 'b'
 			size = fig.get_size_inches()*fig.dpi
-			plt.scatter(point[0],point[1], c=color, s = size[0]/(0.11*WaveMap.world_latitude)**2 , marker='s', cmap='hsv',alpha=pointValue)
+			plt.scatter(point[0],point[1], c=color, s = size[0]/(0.085*WaveMap.world_latitude)**2 , marker='s', cmap='hsv',alpha=pointValue)
 
 	npathPoints = np.array(pathPoints)
 	npathPoints[:,0]
@@ -260,6 +260,9 @@ if __name__ == '__main__':
 
 	wm.update_map(-4, -1, 10)
 	wm.update_map(-4, -2, 10)
+	wm.update_map(-1, 7, 10)
+	wm.update_map(-1, 8, 10)
+	wm.update_map(-5, 0, 10)
 
 	wm.update_map(-9, 4, 10)
 	wm.update_map(-9, 3, 10)
@@ -285,8 +288,8 @@ if __name__ == '__main__':
 
 	wm.updateProbabilityMap()
 
-	startPoint = [0, 0]
-	goalPoint = [-8, 3]
+	startPoint = [-6, 0]
+	goalPoint = [-5, 1]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
