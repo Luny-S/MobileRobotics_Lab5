@@ -135,14 +135,11 @@ def findPathPoints(goalDistanceMap, startPoint, goalPoint):
 		currentPoint, preferredDirection = chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection)
 		pathPoints.append(currentPoint)
 
-	print (pathPoints)
-	raw_input("Press Enter to continue...")
 	return pathPoints
 
 
 def planPath(pathPoints):
-
-	return path
+	return polyPath
 
 #wm.update_map(0,0,100)
 #print wm.get_cell(0,0)
@@ -150,46 +147,78 @@ def planPath(pathPoints):
 #wm.updateProbabilityMap()
 
 
+def plotWavePath(WaveMap, pathPoints):
+	print(WaveMap.mapa)
+	print(pathPoints)
+	fig = plt.figure()
+	for i in range(0, len(WaveMap.mapa)):
+		for j in range(0, len(WaveMap.mapa[0])):
+			point = WaveMap.get_cell_coords(i,j)
+			pointValue = WaveMap.get_cell(i,j,True) 
+			if math.isnan(pointValue):
+				pointValue = 0.2
+				color = 'k'
+			elif math.isinf(pointValue):
+				pointValue = 1
+				color = 'k'
+			else:
+				pointValue = float(pointValue) / WaveMap.world_latitude
+				color = 'b'
+			size = fig.get_size_inches()*fig.dpi
+			plt.scatter(point[0],point[1], c=color, s = size[0]/(0.11*WaveMap.world_latitude)**2 , marker='s', cmap='hsv',alpha=pointValue)
+
+	npathPoints = np.array(pathPoints)
+	npathPoints[:,0]
+	plt.plot(npathPoints[:,0],npathPoints[:,1],'ro-')
+	plt.show()
+
 if __name__ == '__main__':
-	wm = world_map(10, 10, 1)
+	wm = world_map(30, 30, 1)
 	wm.initialize_map()
 
-	wm.update_map(2, 2, 10)
+	wm.update_map(-2, 0, 10)
+	wm.update_map(-2, 1, 10)
+	wm.update_map(-2, 2, 10)
+	wm.update_map(-2, 3, 10)
+	wm.update_map(-2, 4, 10)
+	wm.update_map(-2, 5, 10)
+	wm.update_map(-2, 6, 10)
+	wm.update_map(-3, 0, 10)
+	wm.update_map(-3, 1, 10)
+	wm.update_map(-3, 2, 10)
+	wm.update_map(-3, 3, 10)
+	wm.update_map(-3, 4, 10)
+	wm.update_map(-3, 5, 10)
+	wm.update_map(-3, 6, 10)
+
+	wm.update_map(-9, 4, 10)
+	wm.update_map(-9, 3, 10)
+	wm.update_map(-9, 2, 10)
+	wm.update_map(-9, 1, 10)
+	wm.update_map(-8, 1, 10)
+	wm.update_map(-7, 1, 10)
+	wm.update_map(-6, 1, 10)
+	wm.update_map(-6, 2, 10)
+	wm.update_map(-6, 3, 10)
+	wm.update_map(-6, 4, 10)
+
+	
+	wm.update_map(-6, -1, 10)
+	wm.update_map(-6, -2, 10)
+	wm.update_map(-6, -3, 10)
+	wm.update_map(-6, -4, 10)
+	wm.update_map(-6, -5, 10)
+	wm.update_map(-6, -6, 10)
+	wm.update_map(-10, 6, 10)
+	wm.update_map(-10, 7, 10)
+	wm.update_map(-10, 8, 10)
+
 	wm.updateProbabilityMap()
 
 	startPoint = [0, 0]
-	goalPoint = [-4, 2]
+	goalPoint = [-8, 3]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
 
-	print(WaveMap.get_cell(0, 0))
-	print(WaveMap.get_cell(2, 2))
-	print(WaveMap.get_cell(1, 3))
-
-	mapa = np.asarray(WaveMap.mapa[::-1], dtype=np.float32)
-
-# Podczas skanowania w ruchu mogą pojawić się opóźnienia między getPose,a getScan, więć mapa może się troche rozjechac.
-# Lepiej np. wziąć pozycje przed skanem, skan, po skanie i estymować pozycję, w której był robiony skan.
-# Można też zrobić samemu subscribera do pozycji i skanów. Ten z RosAriaDriver czasem się nie nadaje.
-#
-# Z tym opcjonalnym taskiem:
-# pojawia sie problem, jak masz duzego cella, w  którego częsci jest obstacle to przy danym skanie
-# kilka wiazek go wykryje, a kilka nie. No i teraz dodawanie/odejmowanie dla kazdego beama jest bez sensu.
-# lLepiej dla kazdego skanu tworzyc mape temporary i jesli chociaz 1 / kilka wiazek wykryje, ze to jest przeszkoda
-# to oznaczac to jako przeszkode. (zdjecie na tel)
-
-# saveJSON(outputPath + "temp.JSON", wm.mapa)
-
-	plt.imshow(mapa, interpolation="nearest", cmap='Blues')
-	plt.grid(True, 'both')
-#
-	subticks = 10
-	plt.xticks(np.arange(0, len(mapa[0]) + 1, len(mapa[0]) / subticks), (round(x * wm.cell_size, 2) for x in
-                                                                     np.arange(-len(mapa[0]) / 2, len(mapa[0]) / 2,
-                                                                               len(mapa[0]) / subticks)))
-	plt.yticks(np.arange(len(mapa) + 1, 0, -len(mapa) / subticks),
-           (round(x * wm.cell_size, 2) for x in np.arange(-len(mapa) / 2, len(mapa) / 2, len(mapa) / subticks)))
-# plt.axes().plot([pos[0] for pos in poses], [pos[1] for pos in poses])
-	plt.colorbar()
-	plt.show()
+	plotWavePath(WaveMap,PathPoints)

@@ -35,6 +35,9 @@ class world_map:
     def initialize_map(self):
         # function initializing world map with given value
         # [in] value - value which is written to all the cells in map
+        self.mapa = []
+        self.probabilityMap = []
+
         initialProbabilityHit = 0.5
         initialProbabilityMiss = 1 - initialProbabilityHit
         value = math.log(initialProbabilityHit / initialProbabilityMiss)
@@ -111,6 +114,12 @@ class world_map:
             for longitude in range(len(self.probabilityMap[latitude])):
                 self.probabilityMap[latitude][longitude] = self.logToProbability(
                     self.mapa[latitude][longitude])
+        return self
+
+    def updateProbabilityMapPlanning(self):
+        for latitude in range(len(self.probabilityMap)):
+            for longitude in range(len(self.probabilityMap[latitude])):
+                self.probabilityMap[latitude][longitude] = self.mapa[latitude][longitude]
         return self
 
     def inverseSensorModel(self, hit=1):
