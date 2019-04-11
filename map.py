@@ -90,9 +90,8 @@ class world_map:
             return self.mapa[index[0]][index[1]]
 
     def get_cell_index(self, x, y):
-        longitude = int(
-            round((self.world_longitude / 2.0 + y) / self.cell_size))
-        latitude = int(round((self.world_latitude / 2.0 + x) / self.cell_size))
+        longitude = int(math.ceil(round((float(self.world_longitude) / 2.0 + y) / self.cell_size, 5))) -1
+        latitude = int(math.ceil(round((float(self.world_latitude) / 2.0 + x) / self.cell_size, 5))) -1
         return [latitude, longitude]
 
     def get_cell_coords(self, ix, iy):
