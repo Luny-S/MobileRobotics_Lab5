@@ -105,8 +105,11 @@ class world_map:
     def logToProbability(self, logValue):
         return 1 - 1 / (1 + math.exp(logValue))
 
-    def getProbability(self, coordinates):
-        return self.logToProbability(self.get_cell(coordinates[0], coordinates[1]))
+    def getProbability(self, coordinates, isIndex=False):
+        return self.logToProbability(self.get_cell(coordinates[0], coordinates[1], isIndex))
+
+    def getProbabilityFromMap(self, x, y):
+        return self.probabilityMap[x][y]
 
     def updateProbabilityMap(self):
         for latitude in range(len(self.probabilityMap)):

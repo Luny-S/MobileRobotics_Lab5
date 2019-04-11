@@ -15,7 +15,7 @@ from map import world_map
 # 3. Enlarge obstacles
 # 3. optimize cell visiting
 # 4*. Diagonal movement (/)
-# 5*. Some crazy shit
+# 5*. Some crazy shit (/)
 
 
 #obstacles = "inf"
@@ -24,6 +24,7 @@ from map import world_map
 #initial = "NaN"
 
 probabilityThreshold = 0.75
+robotRadius = 0.1
 
 class direction(enum.Enum):
 	vertical = 0
@@ -32,8 +33,8 @@ class direction(enum.Enum):
 	backslash = 3
 
 def updatePoint(Map, Point, iteration, futurePointList, probabilityMap):
-	if(Point[0] > -float(Map.world_latitude)/2 and Point[0] <= float(Map.world_latitude)/2 and
-	   Point[1] > -float(Map.world_longitude)/2 and Point[1] <= float(Map.world_longitude)/2):
+	if(Point[0] > -float(Map.world_latitude)/2 and Point[0] < float(Map.world_latitude)/2 and
+	   Point[1] > -float(Map.world_longitude)/2 and Point[1] < float(Map.world_longitude)/2):
 		if(probabilityMap.getProbability([Point[0], Point[1]]) >= probabilityThreshold):
 			Map.update_map(Point[0], Point[1], float("inf"))
 		else:
@@ -59,15 +60,28 @@ def startFound(goalDistanceMap, currentPointList, startPoint):
 			return True
 	return False
 
+def enlargeObstacles(probabilityMap):
+	orthoCellDistance = int(math.ceil(float(robotRadius) / probabilityMap.cell_size))
+	for i in range(0,len(probabilityMap.mapa)):
+		for j in range(0,len(probabilityMap.mapa[0])):
+			if(probabilityMap.getProbabilityFromMap(i,j) > probabilityThreshold):
+				cellX = i
+				cellY = j
+				for ii in range(-orthoCellDistance, orthoCellDistance+1):
+					for jj in range(-orthoCellDistance, orthoCellDistance+1):
+						if(cellX+ii < len(probabilityMap.mapa) and cellY+jj < len(probabilityMap.mapa) and cellX+ii >= 0 and cellY+jj >= 0):
+							if(probabilityMap.getProbability([cellX+ii,cellY+jj],True) < probabilityThreshold):
+								if(math.sqrt((ii)**2 + (jj)**2) <= orthoCellDistance):
+									probabilityMap.update_map(cellX+ii,cellY+jj,8,True)
+	probabilityMap.updateProbabilityMap
+
 
 def blastWave(probabilityMap, startPoint, goalPoint):
+	
 	goalDistanceMap = world_map(probabilityMap.world_latitude,
                              probabilityMap.world_longitude,
                              probabilityMap.cell_size)
 	goalDistanceMap.initialize_map()
-
-	#startPoint = [startPoint[0]-goalDistanceMap.cell_size, startPoint[1]-goalDistanceMap.cell_size]
-	#goalPoint = [goalPoint[0]-goalDistanceMap.cell_size, goalPoint[1]-goalDistanceMap.cell_size]
 
 	goalDistanceMap.updateWholeMap(float("NaN"))
 	goalDistanceMap.update_map(startPoint[0], startPoint[1],float("-inf"))
@@ -203,7 +217,7 @@ def findPathPoints(goalDistanceMap, startPoint, goalPoint):
 	currentPoint = startPoint
 	pathPoints.append(currentPoint)
 
-	while(not (currentPoint[0] == goalPoint[0] and currentPoint[1] == goalPoint[1])):
+	while(not (abs(currentPoint[0] - goalPoint[0]) < 0.1*goalDistanceMap.cell_size and currentPoint[1] - goalPoint[1] < 0.1*goalDistanceMap.cell_size)):
 		currentPoint, preferredDirection = chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection)
 		pathPoints.append(currentPoint)
 
@@ -284,18 +298,19 @@ def addObstacles(wm):
 
 
 if __name__ == '__main__':
-	wm = world_map(1.2, 1.2, 0.1)
+	wm = world_map(1.5, 1.5, 0.05)
 	wm.initialize_map()
 
 	#addObstacles(wm)
 
 	wm.update_map(0.1, 0.2, 10)
-	wm.update_map(-0.1, 0.1, 10)
-	wm.update_map(-0.1, 0.2, 10)
+
 	wm.updateProbabilityMap()
 
-	startPoint = [0.1, 0.1]
-	goalPoint = [-0.2, 0.4]
+	enlargeObstacles(wm)
+
+	startPoint = [0.6, 0.6]
+	goalPoint = [-0.6, -0.4]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
