@@ -311,8 +311,8 @@ if __name__ == '__main__':
 
 	enlargeObstacles(wm)
 
-	startPoint = [0, 0]
-	goalPoint = [-6, -6]
+	startPoint = [-6, -6]
+	goalPoint = [0, 0]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
