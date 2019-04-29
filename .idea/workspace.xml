@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d36fe2e0-d07a-4668-a605-63fdb45d1b0c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.vs/MobileRobotics_Lab5/v14/.suo" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MobileRobotics_Lab5.pyproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OccupancyGrid.py" beforeDir="false" afterPath="$PROJECT_DIR$/OccupancyGrid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles/robotScanMoving_01.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles/robotScanMoving_01.JSON" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles/robotScanRotating_02.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles/robotScanRotating_02.JSON" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PathPlanning.py" beforeDir="false" afterPath="$PROJECT_DIR$/PathPlanning.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map.py" beforeDir="false" afterPath="$PROJECT_DIR$/map.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/temp.JSON" beforeDir="false" afterPath="$PROJECT_DIR$/output/temp.JSON" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,72 +21,17 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/MobileRobotics_Lab5$lab21.coverage" NAME="OccupancyGrid Coverage Results" MODIFIED="1552934810395" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MobileRobotics_Lab5$OccupancyGrid.coverage" NAME="OccupancyGrid Coverage Results" MODIFIED="1554117154178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MobileRobotics_Lab5$OccupancyGrid.coverage" NAME="OccupancyGrid Coverage Results" MODIFIED="1556541688978" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="OccupancyGrid.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OccupancyGrid.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+            <state relative-caret-position="268">
+              <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
               <folding>
-                <element signature="e#117#128#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="robotScanRotating_02.JSON" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datafiles/robotScanRotating_02.JSON">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="5211" column="1" lean-forward="true" selection-start-line="5211" selection-start-column="1" selection-end-line="5211" selection-end-column="1" />
-              <folding>
-                <element signature="e#4#11288#0" />
-                <element signature="e#11292#24237#0" />
-                <element signature="e#24241#37065#0" />
-                <element signature="e#37069#48497#0" />
-                <element signature="e#48501#58534#0" />
-                <element signature="e#58538#70287#0" />
-                <element signature="e#70291#83533#0" />
-                <element signature="e#83537#95706#0" />
-                <element signature="e#95710#105582#0" />
-                <element signature="e#105586#116457#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="robotScanMoving_01.JSON" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datafiles/robotScanMoving_01.JSON">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="521" column="4" lean-forward="true" selection-start-line="521" selection-start-column="4" selection-end-line="521" selection-end-column="4" />
-              <folding>
-                <element signature="e#4#12106#0" />
-                <element signature="e#12110#24253#0" />
-                <element signature="e#24257#36397#0" />
-                <element signature="e#36401#48739#0" />
-                <element signature="e#48743#61252#0" />
-                <element signature="e#61256#73831#0" />
-                <element signature="e#73835#86580#0" />
-                <element signature="e#86584#99271#0" />
-                <element signature="e#99275#112018#0" />
-                <element signature="e#112022#124789#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="robotScanMoving_02.JSON" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datafiles/robotScanMoving_02.JSON">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="2086" column="9" selection-start-line="2086" selection-start-column="5" selection-end-line="2086" selection-end-column="9" />
-              <folding>
-                <element signature="e#50871#50957#0" />
-                <element signature="e#50971#63771#0" />
+                <element signature="e#254#265#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -91,10 +40,28 @@
       <file leaf-file-name="map.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/map.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="25" column="45" lean-forward="true" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
+            <state relative-caret-position="224">
+              <caret line="222" column="30" selection-start-line="222" selection-start-column="30" selection-end-line="222" selection-end-column="30" />
               <folding>
                 <element signature="e#47#58#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="robotTrap_01.JSON" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datafiles/robotTrap_01.JSON">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
+              <folding>
+                <element signature="e#4#13401#0" />
+                <element signature="e#88#13397#0" />
+                <element signature="e#13405#26770#0" />
+                <element signature="e#13491#26766#0" />
+                <element signature="e#26860#39994#0" />
+                <element signature="e#40087#52974#0" />
+                <element signature="e#53067#65991#0" />
               </folding>
             </state>
           </provider>
@@ -103,7 +70,7 @@
       <file leaf-file-name="getlimits.py" pinned="false" current-in-tab="false">
         <entry file="file://D:/Programy/Anaconda2/Lib/site-packages/numpy/core/getlimits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
+            <state relative-caret-position="6511">
               <caret line="383" selection-start-line="383" selection-end-line="383" />
             </state>
           </provider>
@@ -119,13 +86,20 @@
       <find>probabilityMap</find>
       <find>pose</find>
       <find>]]</find>
-      <find>self.cell_size / 2.0</find>
+      <find />
       <find>updateHitCells</find>
       <find>error</find>
       <find>solution</find>
+      <find>robotPosition</find>
+      <find>get_cell_index</find>
+      <find>dPos</find>
+      <find>pathPo</find>
+      <find>pathPoints</find>
     </findStrings>
     <replaceStrings>
       <replace>halfCellSize</replace>
+      <replace>sensorPosition</replace>
+      <replace>LaserPath</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -135,7 +109,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/output/temp.JSON" />
         <option value="$PROJECT_DIR$/lab5.py" />
         <option value="$PROJECT_DIR$/datafiles/map_round.json" />
         <option value="$PROJECT_DIR$/output/robotScan.JSON" />
@@ -149,9 +122,11 @@
         <option value="$PROJECT_DIR$/output/data.JSON" />
         <option value="$PROJECT_DIR$/datafiles/data.JSON" />
         <option value="$PROJECT_DIR$/datafiles/robotWandering_01.JSON" />
-        <option value="$PROJECT_DIR$/map.py" />
         <option value="$PROJECT_DIR$/datafiles/robotScanMoving_01.JSON" />
         <option value="$PROJECT_DIR$/datafiles/robotScanRotating_02.JSON" />
+        <option value="$PROJECT_DIR$/datafiles/robotTrap_01.JSON" />
+        <option value="$PROJECT_DIR$/output/temp.JSON" />
+        <option value="$PROJECT_DIR$/map.py" />
         <option value="$PROJECT_DIR$/OccupancyGrid.py" />
       </list>
     </option>
@@ -166,8 +141,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="192" />
-    <option name="y" value="-24" />
+    <option name="x" value="190" />
+    <option name="y" value="-25" />
     <option name="width" value="1855" />
     <option name="height" value="1045" />
   </component>
@@ -176,6 +151,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -186,13 +162,12 @@
             <path>
               <item name="MobileRobotics_Lab5" type="b2602c69:ProjectViewProjectNode" />
               <item name="MobileRobotics_Lab5" type="462c0819:PsiDirectoryNode" />
-              <item name="datafiles" type="462c0819:PsiDirectoryNode" />
+              <item name="output" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -272,29 +247,29 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50065106" side_tool="true" weight="0.25241378" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32965517" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49934897" visible="true" weight="0.25931033" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49934897" weight="0.32965517" />
+      <window_info anchor="bottom" id="TODO" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50065106" side_tool="true" weight="0.25241378" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="11" weight="0.32965517" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49934897" visible="true" weight="0.27310345" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49934897" weight="0.2786207" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15039062" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" x="0" y="0" width="1536" height="814" id="SciView" order="3" sideWeight="0.4979424" weight="0.41601562" />
+      <window_info active="true" anchor="right" x="0" y="0" width="1536" height="814" id="SciView" order="3" sideWeight="0.4979424" visible="true" weight="0.4466146" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" x="155" y="340" width="1080" height="845" id="Debug" order="3" weight="0.5972414" />
+      <window_info anchor="right" x="1074" y="43" width="461" height="694" id="Debug" order="6" type="FLOATING" weight="0.78255206" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="5" sideWeight="0.5020576" side_tool="true" weight="0.3359375" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32827586" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.11448276" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.11448276" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,19 +286,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/map.py</url>
-          <line>263</line>
-          <option name="timeStamp" value="154" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/OccupancyGrid.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="169" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/map.py</url>
-          <line>253</line>
-          <option name="timeStamp" value="173" />
+          <url />
+          <line>80</line>
+          <option name="timeStamp" value="183" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -336,8 +301,13 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="174" />
+      <option name="time" value="193" />
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="six" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="setValue">
@@ -349,23 +319,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/map.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="135" column="60" selection-start-line="135" selection-start-column="60" selection-end-line="135" selection-end-column="60" />
-          <folding>
-            <element signature="e#47#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OccupancyGrid.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1224">
           <caret line="80" column="27" selection-start-line="80" selection-start-column="27" selection-end-line="80" selection-end-column="27" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -397,9 +354,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
           <caret line="47" column="4" selection-start-line="47" selection-start-column="4" selection-end-line="48" selection-end-column="23" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -431,9 +385,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1819">
           <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -451,9 +402,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1819">
           <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -468,9 +416,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1564">
           <caret line="107" column="54" selection-start-line="107" selection-start-column="54" selection-end-line="107" selection-end-column="54" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -485,9 +430,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="33" column="31" lean-forward="true" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -502,9 +444,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="23" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -519,9 +458,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="11" lean-forward="true" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
-          <folding>
-            <element signature="e#117#128#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -578,13 +514,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8908">
           <caret line="524" column="9" selection-start-line="524" selection-start-column="5" selection-end-line="524" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/temp.JSON">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2329">
-          <caret column="137359" selection-start-column="137359" selection-end-column="137359" />
         </state>
       </provider>
     </entry>
@@ -685,38 +614,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="12504" column="4" lean-forward="true" selection-start-line="12504" selection-start-column="4" selection-end-line="12504" selection-end-column="4" />
-          <folding>
-            <element signature="e#4#10632#0" />
-            <element signature="e#10636#21186#0" />
-            <element signature="e#21190#32012#0" />
-            <element signature="e#32016#42918#0" />
-            <element signature="e#42922#53380#0" />
-            <element signature="e#53384#64152#0" />
-            <element signature="e#64156#74854#0" />
-            <element signature="e#74858#85005#0" />
-            <element signature="e#85009#95335#0" />
-            <element signature="e#95339#106333#0" />
-            <element signature="e#106337#117402#0" />
-            <element signature="e#117406#128889#0" />
-            <element signature="e#128893#140486#0" />
-            <element signature="e#140490#151998#0" />
-            <element signature="e#152002#163362#0" />
-            <element signature="e#163366#174982#0" />
-            <element signature="e#174986#186427#0" />
-            <element signature="e#186431#198129#0" />
-            <element signature="e#198133#208636#0" />
-            <element signature="e#208640#219115#0" />
-            <element signature="e#219119#230562#0" />
-            <element signature="e#230566#242982#0" />
-            <element signature="e#242986#255271#0" />
-            <element signature="e#255275#267308#0" />
-            <element signature="e#267312#278539#0" />
-            <element signature="e#278543#289899#0" />
-            <element signature="e#289903#301669#0" />
-            <element signature="e#301673#312522#0" />
-            <element signature="e#312526#323555#0" />
-            <element signature="e#323559#334226#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -729,18 +626,8 @@
     </entry>
     <entry file="file://D:/Programy/Anaconda2/Lib/site-packages/numpy/core/getlimits.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
+        <state relative-caret-position="6511">
           <caret line="383" selection-start-line="383" selection-end-line="383" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/map.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="25" column="45" lean-forward="true" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding>
-            <element signature="e#47#58#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -748,10 +635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="16">
           <caret line="2086" column="9" selection-start-line="2086" selection-start-column="5" selection-end-line="2086" selection-end-column="9" />
-          <folding>
-            <element signature="e#50871#50957#0" />
-            <element signature="e#50971#63771#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -759,18 +642,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="521" column="4" lean-forward="true" selection-start-line="521" selection-start-column="4" selection-end-line="521" selection-end-column="4" />
-          <folding>
-            <element signature="e#4#12106#0" />
-            <element signature="e#12110#24253#0" />
-            <element signature="e#24257#36397#0" />
-            <element signature="e#36401#48739#0" />
-            <element signature="e#48743#61252#0" />
-            <element signature="e#61256#73831#0" />
-            <element signature="e#73835#86580#0" />
-            <element signature="e#86584#99271#0" />
-            <element signature="e#99275#112018#0" />
-            <element signature="e#112022#124789#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -778,27 +649,48 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="5211" column="1" lean-forward="true" selection-start-line="5211" selection-start-column="1" selection-end-line="5211" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output/temp.JSON">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-46410">
+          <caret line="435" column="6" selection-start-line="435" selection-start-column="6" selection-end-line="435" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datafiles/robotTrap_01.JSON">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="2" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
           <folding>
-            <element signature="e#4#11288#0" />
-            <element signature="e#11292#24237#0" />
-            <element signature="e#24241#37065#0" />
-            <element signature="e#37069#48497#0" />
-            <element signature="e#48501#58534#0" />
-            <element signature="e#58538#70287#0" />
-            <element signature="e#70291#83533#0" />
-            <element signature="e#83537#95706#0" />
-            <element signature="e#95710#105582#0" />
-            <element signature="e#105586#116457#0" />
+            <element signature="e#4#13401#0" />
+            <element signature="e#88#13397#0" />
+            <element signature="e#13405#26770#0" />
+            <element signature="e#13491#26766#0" />
+            <element signature="e#26860#39994#0" />
+            <element signature="e#40087#52974#0" />
+            <element signature="e#53067#65991#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/map.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="222" column="30" selection-start-line="222" selection-start-column="30" selection-end-line="222" selection-end-column="30" />
+          <folding>
+            <element signature="e#47#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/OccupancyGrid.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+        <state relative-caret-position="268">
+          <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
           <folding>
-            <element signature="e#117#128#0" expanded="true" />
+            <element signature="e#254#265#0" expanded="true" />
           </folding>
         </state>
       </provider>

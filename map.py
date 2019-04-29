@@ -7,9 +7,14 @@ import numpy as np
 
 np.seterr(divide='ignore', invalid='ignore')
 
+import json
 
 # latitude - szerokość - x
 # longitude - dlugosc geo. - y
+
+
+# test!
+import matplotlib.pyplot as plt2
 
 
 class world_map:
@@ -35,8 +40,6 @@ class world_map:
     def initialize_map(self):
         # function initializing world map with given value
         # [in] value - value which is written to all the cells in map
-        self.mapa = []
-        self.probabilityMap = []
 
         initialProbabilityHit = 0.5
         initialProbabilityMiss = 1 - initialProbabilityHit
@@ -44,7 +47,6 @@ class world_map:
 
         self.initialProbability = initialProbabilityHit
         self.initialLog = value
-        self.mapa = []
         for i in range(int(math.ceil(self.world_latitude / self.cell_size))):
             rowLog = []
             rowProb = []
@@ -90,8 +92,8 @@ class world_map:
             return self.mapa[index[0]][index[1]]
 
     def get_cell_index(self, x, y):
-        longitude = int(math.ceil(round((float(self.world_longitude) / 2.0 + y) / self.cell_size, 5))) -1
-        latitude = int(math.ceil(round((float(self.world_latitude) / 2.0 + x) / self.cell_size, 5))) -1
+        longitude = int(math.ceil(round((float(self.world_longitude) / 2.0 + y) / self.cell_size, 5))) - 1
+        latitude = int(math.ceil(round((float(self.world_latitude) / 2.0 + x) / self.cell_size, 5))) - 1
         return [latitude, longitude]
 
     def get_cell_coords(self, ix, iy):
@@ -144,137 +146,81 @@ class world_map:
             scanData.append([theta[index], data[index]])
         return scanData
 
-    def getGlobalHitpoints(self, robotPosition, scanData):
+    def getGlobalHitpoints(self, sensorPosition, scanData):
         pointsHitGlobal = list()
 
         for scanIndex in range(len(scanData)):
             # localHitTemp.append([theta[scanIndex], iteration['scan'][scanIndex]])
             if not np.isinf(scanData[scanIndex][1]) and not np.isnan(scanData[scanIndex][1]):
-                scanPointX = robotPosition[1] + \
-                    scanData[scanIndex][1] * math.sin(robotPosition[2] + scanData[scanIndex][0]) + \
-                    0.18 * math.sin(robotPosition[2])
-                scanPointY = robotPosition[0] + \
-                    scanData[scanIndex][1] * math.cos(robotPosition[2] + scanData[scanIndex][0]) + \
-                    0.18 * math.cos(robotPosition[2])
+                scanPointX = sensorPosition[0] + \
+                             scanData[scanIndex][1] * math.cos(sensorPosition[2] + scanData[scanIndex][0])
+                scanPointY = sensorPosition[1] + \
+                             scanData[scanIndex][1] * math.sin(sensorPosition[2] + scanData[scanIndex][0])
 
-                scanPointX = -scanPointX
                 pointsHitGlobal.append([scanPointX, scanPointY])
 
         return pointsHitGlobal
 
-    def checkLineCellIntersect(self, cell, beam):
-        # intersects = [False, False, False]
+    def getLaserPath(self, LaserPath, startPoint, finalPoint):
+        # key = str(fix) + "." + str(fiy)
+        diff = [int(float(finalPoint[0] - startPoint[0]) / 2), int(float(finalPoint[1] - startPoint[1]) / 2)]
+        midPoint = [finalPoint[0] - diff[0], finalPoint[1] - diff[1]]
 
-        halfCellSize = self.cell_size / 2.0
-        cellCoords = self.get_cell_coords(cell[0], cell[1])
+        key = str(midPoint[0]) + "." + str(midPoint[1])
+        if LaserPath.get(key, 0) != 1:
+            LaserPath[key] = 0;
 
-        p1 = [cellCoords[0] - halfCellSize, cellCoords[1] - halfCellSize]
-        p2 = [cellCoords[0] - halfCellSize, cellCoords[1] + halfCellSize]
-        p3 = [cellCoords[0] + halfCellSize, cellCoords[1] + halfCellSize]
-        p4 = [cellCoords[0] + halfCellSize, cellCoords[1] - halfCellSize]
+        if abs(diff[0]) + abs(diff[1]) > 0:
+            self.getLaserPath(LaserPath, startPoint, midPoint)
+            self.getLaserPath(LaserPath, midPoint, finalPoint)
+        else:
+            return LaserPath
 
-        sline = list()
-        sline.append(np.polyfit([p1[0], p3[0]], [p1[1], p3[1]], 1))
-        sline.append(np.polyfit([p2[0], p3[0]], [p2[1], p3[1]], 1))
-        sline.append(np.polyfit([p1[0], p4[0]], [p1[1], p4[1]], 1))
+    def updateHitCells(self, data, iter):
 
-        for i in range(3):
-            A = np.array([[-1 * beam[0], 1], [-1 * sline[i][0], 1]])
-            B = np.array([beam[1], sline[i][1]])
-            try:
-                x, y = np.linalg.solve(A, B)
-
-                if p1[0] <= x <= p3[0]:
-                    # intersects[i] = True
-                    return True
-                    break
-            except np.linalg.linalg.LinAlgError as error:
-                if self.debug:
-                    print("Algebra error")
-
-        return False
-        # if all(x is False for x in intersects):
-        #     return False
-        # else:
-        #     if intersects[0] is True and intersects[1] is False and intersects[2] is False:
-        #         return ["left", "right"]
-        #     elif intersects[0] is True and intersects[1] is True and intersects[2] is False:
-        #         return ["up", "right"]
-        #     elif intersects[0] is True and intersects[1] is False and intersects[2] is True:
-        #         return ["down", "left"]
-        #     elif intersects[0] is True and intersects[1] is True and intersects[2] is True:
-        #         return ["up", "down"]
-
-    def updateHitCells(self, data):
+        global colors
         # function to update log map
         # [in] data - list of data from one iterations. Has sublists 'pose' and 'scan'.
+
+        # Robot coordinate X is Y coordinate on our map. Same for Robot Y => Our X
         sensorPosition = data['pose']
         sensorPosition[2] = np.deg2rad(sensorPosition[2])
+        tempSensorPosition = sensorPosition[:]
+
+        sensorPosition[0] += 0.18 * math.cos(sensorPosition[2])
+        sensorPosition[1] += 0.18 * math.sin(sensorPosition[2])
+        # [OK] Sensor position should be okey now.
+
         scanData = self.convertScanData(data['scan'])
         globalPoints = self.getGlobalHitpoints(sensorPosition, scanData)
 
-        # TODO sprawdzic, czy w dobra strone sie dodalo :)
-        sensorPosition[0] += 0.18 * math.sin(sensorPosition[2])
-        sensorPosition[1] += 0.18 * math.cos(sensorPosition[2])
+        print sensorPosition
+        sensorPosition2 = sensorPosition[:]
+
+        plt2.scatter([x[0] for x in globalPoints], [x[1] for x in globalPoints], c='blue')
+        plt2.scatter(sensorPosition[0], sensorPosition[1], c='red')
+        plt2.scatter(tempSensorPosition[0], tempSensorPosition[1], c='green')
+        plt2.xlabel('x')
+        plt2.ylabel('y')
+        axes = plt2.gca()
+        axes.set_xlim([-4, 4])
+        axes.set_ylim([-4, 4])
+        plt2.grid()
+        plt2.show()
 
         pathPoints = dict()  # points through which the beam passes
 
+        six, siy = self.get_cell_index(sensorPosition[0], sensorPosition[1])  # sensor position indexes
+
         for globalPoint in globalPoints:
             # path from sensorPosition to globalPoint
-            fix, fiy = self.get_cell_index(
-                globalPoint[0], globalPoint[1])  # final point indexes
-            six, siy = self.get_cell_index(
-                sensorPosition[0], sensorPosition[1])  # sensor position indexes
+            fix, fiy = self.get_cell_index(globalPoint[0], globalPoint[1])  # final point indexes
             point = [six, siy]
 
             key = str(fix) + "." + str(fiy)
             pathPoints[key] = 1
 
-            try:
-                beam = np.polyfit([sensorPosition[0], globalPoint[0]], [
-                                  sensorPosition[1], globalPoint[1]], 1)
-                # direction of iteration through cells on thupdateHitCellse map
-                dPos = ["", ""]
-
-                if globalPoint[0] < sensorPosition[0]:
-                    dPos[0] = -1
-                else:
-                    dPos[0] = 1
-
-                if globalPoint[1] >= sensorPosition[1]:
-                    dPos[1] = 1
-                else:
-                    dPos[1] = -1
-
-                tempPoint = list(point)
-                while tempPoint[0] != fix or tempPoint[1] != fiy:
-                    tempPoint = list(point)
-                    tempPoint[0] += dPos[0]
-                    ifHit = self.checkLineCellIntersect(tempPoint, beam)
-                    if ifHit is False:
-                        tempPoint = list(point)
-                        tempPoint[1] += dPos[1]
-                        ifHit = self.checkLineCellIntersect(tempPoint, beam)
-
-                    if ifHit is True:
-                        point = list(tempPoint)
-                        key = str(tempPoint[0]) + "." + str(tempPoint[1])
-                        if key not in pathPoints:
-                            pathPoints[key] = 0
-                    else:
-                        if self.debug:
-                            print("Solution not found after point : ")
-                            print(point)
-                            print("For global point : ")
-                            print(globalPoint)
-                            print([fix, fiy])
-                            print("And sensor position : ")
-                            print(sensorPosition)
-                        break
-
-            except np.linalg.linalg.LinAlgError as error:
-                if self.debug:
-                    print ("Algebra error")
+            self.getLaserPath(pathPoints, point[:], [fix, fiy])
 
         for key, value in pathPoints.iteritems():
             pIndex = key.split('.')
@@ -283,22 +229,3 @@ class world_map:
             self.update_map(int(pIndex[0]), int(pIndex[1]), logValue, True)
 
         return True
-        # if self.measurementInPerceptionField(globalPoint):
-        #     logValue = self.get_cell(globalPoint[0], globalPoint[1]) + self.inverseSensorModel() - self.initialLog
-        #     self.update_map(globalPoint[0], globalPoint[1], logValue)
-
-# class hit_map(world_map):
-#     def __init__(self, longitude, latitude, cell_size):
-#         self.cell_size = cell_size
-#         self.world_longitude = longitude
-#         self.world_latitude = latitude
-#
-#     def initialize_map(self):
-#         self.mapa = []
-#         self.probabilityMap = []
-#         for i in range(int(math.ceil(self.world_longitude / self.cell_size))):
-#             row = []
-#             for j in range(int(math.ceil(self.world_latitude / self.cell_size))):
-#                 row.append(0)
-#             self.mapa.append(row)
-#         return self
