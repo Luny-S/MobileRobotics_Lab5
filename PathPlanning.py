@@ -95,6 +95,8 @@ def blastWave(probabilityMap, startPoint, goalPoint):
 	iteration = 1
 
 	while (not startFound(goalDistanceMap, currentPointList, startPoint)):
+		if(not currentPointList):
+			return goalDistanceMap
 		for currentPoint in currentPointList:
 			updateNeighbours(goalDistanceMap, currentPoint, iteration,
 			                 futurePointList, probabilityMap)
@@ -219,6 +221,8 @@ def findPathPoints(goalDistanceMap, startPoint, goalPoint):
 
 	while(not (abs(currentPoint[0] - goalPoint[0]) < 0.1*goalDistanceMap.cell_size and abs(currentPoint[1] - goalPoint[1]) < 0.1*goalDistanceMap.cell_size)):
 		currentPoint, preferredDirection = chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection)
+		if(not currentPoint):
+			return pathPoints
 		pathPoints.append(currentPoint)
 
 	return pathPoints
@@ -308,7 +312,7 @@ if __name__ == '__main__':
 	enlargeObstacles(wm)
 
 	startPoint = [0, 0]
-	goalPoint = [-12, 1]
+	goalPoint = [-6, -6]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
