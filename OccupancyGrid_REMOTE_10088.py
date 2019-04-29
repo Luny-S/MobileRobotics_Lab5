@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# from drive import RosAriaDriver
-# robot=RosAriaDriver('/PIONIER6')
-
+#from drive import RosAriaDriver
+#robot=RosAriaDriver('/PIONIER6')
 
 import math
 import json
@@ -46,39 +45,37 @@ def robotScanData():
 
 
 if __name__ == '__main__':
-    wm = world_map(10, 10, 0.1)
+    wm = world_map(20, 20, 0.25)
     wm.initialize_map()
-    # robot obracal sie w lewo
-    data = readJSON(inputPath + "robotTrap_01.JSON")
+
+    robotScanData()
+
+    exit(0)
+
+    data = readJSON(inputPath + "robotScanRotating_02.JSON")
     # data = readJSON(inputPath + "map_boxes_0.json")
     # data = readJSON(inputPath + "map_boxes_1.json")
     # data = readJSON(inputPath + "map_round.json")
     # saveJSON(outputPath + "pointsHitGlobal.JSON", pointsHitGlobal)
 
-    # for iteration in data:
-    #     wm.updateHitCells(iteration)
-
-    #gdzie miedzy 3, a 4 iteracja sie robi blad.
-
-    for i in range(10):
-        wm.updateHitCells(data[i], i)
-    # test = wm.updateHitCells(data[0])
-    # update HitCells można zoptymalizować. Pola, które przecina wiązka, można wyliczać przy pomocy bisekcji.
-    # Szukamy wspolrzednych polowy odleglosci miedzy sensorPos i finalPos. Sprawdzamy tego indeks. Zaznaczamy jako trafione
-    # I dalej dzielimy. Dzielimy tak dlugo, az suma roznic indeksow w pionie i poziomie będzie równa 1
-    # Dzieki temu nie musimy rozwiazywac rownania liniowego
-
-
-
+    for iteration in data:
+        wm.updateHitCells(iteration)
+    # wm.updateHitCells(data[0])
 
     wm.updateProbabilityMap()
-    mapa = np.asarray(wm.probabilityMap, dtype=np.float32)
+    mapa = np.asarray(wm.probabilityMap[::-1], dtype=np.float32)
 
     # Podczas skanowania w ruchu mogą pojawić się opóźnienia między getPose,a getScan, więć mapa może się troche rozjechac.
     # Lepiej np. wziąć pozycje przed skanem, skan, po skanie i estymować pozycję, w której był robiony skan.
     # Można też zrobić samemu subscribera do pozycji i skanów. Ten z RosAriaDriver czasem się nie nadaje.
+    #
+    # Z tym opcjonalnym taskiem:
+    # pojawia sie problem, jak masz duzego cella, w  którego częsci jest obstacle to przy danym skanie
+    # kilka wiazek go wykryje, a kilka nie. No i teraz dodawanie/odejmowanie dla kazdego beama jest bez sensu.
+    # lLepiej dla kazdego skanu tworzyc mape temporary i jesli chociaz 1 / kilka wiazek wykryje, ze to jest przeszkoda
+    # to oznaczac to jako przeszkode. (zdjecie na tel)
 
-    saveJSON(outputPath + "temp.JSON", wm.mapa)
+    # saveJSON(outputPath + "temp.JSON", wm.mapa)
 
     plt.imshow(mapa, interpolation="nearest", cmap='Blues')
     plt.grid(True, 'both')
@@ -89,6 +86,6 @@ if __name__ == '__main__':
                                                                                    len(mapa[0]) / subticks)))
     plt.yticks(np.arange(len(mapa) + 1, 0, -len(mapa) / subticks),
                (round(x * wm.cell_size, 2) for x in np.arange(-len(mapa) / 2, len(mapa) / 2, len(mapa) / subticks)))
+    # plt.axes().plot([pos[0] for pos in poses], [pos[1] for pos in poses])
     plt.colorbar()
     plt.show()
-    pass

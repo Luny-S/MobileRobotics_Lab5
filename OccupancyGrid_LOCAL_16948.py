@@ -4,7 +4,6 @@
 # from drive import RosAriaDriver
 # robot=RosAriaDriver('/PIONIER6')
 
-
 import math
 import json
 
@@ -59,16 +58,15 @@ if __name__ == '__main__':
     #     wm.updateHitCells(iteration)
 
     #gdzie miedzy 3, a 4 iteracja sie robi blad.
+    print len(data)
 
-    for i in range(10):
+    for i in range(1):
         wm.updateHitCells(data[i], i)
     # test = wm.updateHitCells(data[0])
     # update HitCells można zoptymalizować. Pola, które przecina wiązka, można wyliczać przy pomocy bisekcji.
     # Szukamy wspolrzednych polowy odleglosci miedzy sensorPos i finalPos. Sprawdzamy tego indeks. Zaznaczamy jako trafione
     # I dalej dzielimy. Dzielimy tak dlugo, az suma roznic indeksow w pionie i poziomie będzie równa 1
     # Dzieki temu nie musimy rozwiazywac rownania liniowego
-
-
 
 
     wm.updateProbabilityMap()
