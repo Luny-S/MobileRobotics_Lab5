@@ -8,9 +8,12 @@ np.seterr(divide='ignore', invalid='ignore')
 
 import json
 
-
 # latitude - szerokość - x
 # longitude - dlugosc geo. - y
+
+
+# test!
+import matplotlib.pyplot as plt2
 
 
 class world_map:
@@ -127,20 +130,17 @@ class world_map:
             scanData.append([theta[index], data[index]])
         return scanData
 
-    def getGlobalHitpoints(self, robotPosition, scanData):
+    def getGlobalHitpoints(self, sensorPosition, scanData):
         pointsHitGlobal = list()
 
         for scanIndex in range(len(scanData)):
             # localHitTemp.append([theta[scanIndex], iteration['scan'][scanIndex]])
             if not np.isinf(scanData[scanIndex][1]) and not np.isnan(scanData[scanIndex][1]):
-                scanPointX = robotPosition[1] + \
-                             scanData[scanIndex][1] * math.sin(robotPosition[2] + scanData[scanIndex][0]) + \
-                             0.18 * math.sin(robotPosition[2])
-                scanPointY = robotPosition[0] + \
-                             scanData[scanIndex][1] * math.cos(robotPosition[2] + scanData[scanIndex][0]) + \
-                             0.18 * math.cos(robotPosition[2])
+                scanPointX = sensorPosition[0] + \
+                             scanData[scanIndex][1] * math.cos(sensorPosition[2] + scanData[scanIndex][0])
+                scanPointY = sensorPosition[1] + \
+                             scanData[scanIndex][1] * math.sin(sensorPosition[2] + scanData[scanIndex][0])
 
-                scanPointX = -scanPointX
                 pointsHitGlobal.append([scanPointX, scanPointY])
 
         return pointsHitGlobal
@@ -176,36 +176,46 @@ class world_map:
                     print "Algebra error"
 
         return False
-        # if all(x is False for x in intersects):
-        #     return False
-        # else:
-        #     if intersects[0] is True and intersects[1] is False and intersects[2] is False:
-        #         return ["left", "right"]
-        #     elif intersects[0] is True and intersects[1] is True and intersects[2] is False:
-        #         return ["up", "right"]
-        #     elif intersects[0] is True and intersects[1] is False and intersects[2] is True:
-        #         return ["down", "left"]
-        #     elif intersects[0] is True and intersects[1] is True and intersects[2] is True:
-        #         return ["up", "down"]
 
-    def updateHitCells(self, data):
+    def updateHitCells(self, data, iter):
+
+        global colors
         # function to update log map
         # [in] data - list of data from one iterations. Has sublists 'pose' and 'scan'.
+
+        # Robot coordinate X is Y coordinate on our map. Same for Robot Y => Our X
         sensorPosition = data['pose']
         sensorPosition[2] = np.deg2rad(sensorPosition[2])
+        tempSensorPosition = sensorPosition[:]
+
+        sensorPosition[0] += 0.18 * math.cos(sensorPosition[2])
+        sensorPosition[1] += 0.18 * math.sin(sensorPosition[2])
+        # [OK] Sensor position should be okey now.
+
         scanData = self.convertScanData(data['scan'])
         globalPoints = self.getGlobalHitpoints(sensorPosition, scanData)
 
-        # TODO sprawdzic, czy w dobra strone sie dodalo :)
-        sensorPosition[0] += 0.18 * math.sin(sensorPosition[2])
-        sensorPosition[1] += 0.18 * math.cos(sensorPosition[2])
+        print sensorPosition
+        sensorPosition2 = sensorPosition[:]
+
+        plt2.scatter([x[0] for x in globalPoints], [x[1] for x in globalPoints], c='blue')
+        plt2.scatter(sensorPosition[0], sensorPosition[1], c='red')
+        plt2.scatter(tempSensorPosition[0], tempSensorPosition[1], c='green')
+        plt2.xlabel('x')
+        plt2.ylabel('y')
+        axes = plt2.gca()
+        axes.set_xlim([-4, 4])
+        axes.set_ylim([-4, 4])
+        plt2.grid()
+        plt2.show()
 
         pathPoints = dict()  # points through which the beam passes
+
+        six, siy = self.get_cell_index(sensorPosition[0], sensorPosition[1])  # sensor position indexes
 
         for globalPoint in globalPoints:
             # path from sensorPosition to globalPoint
             fix, fiy = self.get_cell_index(globalPoint[0], globalPoint[1])  # final point indexes
-            six, siy = self.get_cell_index(sensorPosition[0], sensorPosition[1])  # sensor position indexes
             point = [six, siy]
 
             key = str(fix) + "." + str(fiy)
@@ -262,22 +272,3 @@ class world_map:
             self.update_map(int(pIndex[0]), int(pIndex[1]), logValue, True)
 
         return True
-        # if self.measurementInPerceptionField(globalPoint):
-        #     logValue = self.get_cell(globalPoint[0], globalPoint[1]) + self.inverseSensorModel() - self.initialLog
-        #     self.update_map(globalPoint[0], globalPoint[1], logValue)
-
-# class hit_map(world_map):
-#     def __init__(self, longitude, latitude, cell_size):
-#         self.cell_size = cell_size
-#         self.world_longitude = longitude
-#         self.world_latitude = latitude
-#
-#     def initialize_map(self):
-#         self.mapa = []
-#         self.probabilityMap = []
-#         for i in range(int(math.ceil(self.world_longitude / self.cell_size))):
-#             row = []
-#             for j in range(int(math.ceil(self.world_latitude / self.cell_size))):
-#                 row.append(0)
-#             self.mapa.append(row)
-#         return self
