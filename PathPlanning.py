@@ -217,7 +217,7 @@ def findPathPoints(goalDistanceMap, startPoint, goalPoint):
 	currentPoint = startPoint
 	pathPoints.append(currentPoint)
 
-	while(not (abs(currentPoint[0] - goalPoint[0]) < 0.1*goalDistanceMap.cell_size and currentPoint[1] - goalPoint[1] < 0.1*goalDistanceMap.cell_size)):
+	while(not (abs(currentPoint[0] - goalPoint[0]) < 0.1*goalDistanceMap.cell_size and abs(currentPoint[1] - goalPoint[1]) < 0.1*goalDistanceMap.cell_size)):
 		currentPoint, preferredDirection = chooseNeighbour(goalDistanceMap, currentPoint, preferredDirection)
 		pathPoints.append(currentPoint)
 
@@ -298,19 +298,17 @@ def addObstacles(wm):
 
 
 if __name__ == '__main__':
-	wm = world_map(1.5, 1.5, 0.05)
+	wm = world_map(30, 30, 1)
 	wm.initialize_map()
 
-	#addObstacles(wm)
-
-	wm.update_map(0.1, 0.2, 10)
+	addObstacles(wm)
 
 	wm.updateProbabilityMap()
 
 	enlargeObstacles(wm)
 
-	startPoint = [0.6, 0.6]
-	goalPoint = [-0.6, -0.4]
+	startPoint = [0, 0]
+	goalPoint = [-12, 1]
 
 	WaveMap = blastWave(wm, startPoint, goalPoint)
 	PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
