@@ -9,7 +9,7 @@
 # 7. Repeat until goal reached or the world ends
 # *** Optimise path to turn while driving
 
-from map import world_map
+from OccupancyGrid import world_map
 import PathPlanning
 
 probabilityThreshold = 0.75
