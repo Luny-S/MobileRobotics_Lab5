@@ -12,7 +12,6 @@ import json
 # latitude - szerokość - x
 # longitude - dlugosc geo. - y
 
-
 # test!
 import matplotlib.pyplot as plt2
 
@@ -69,7 +68,6 @@ class world_map:
         # [in] x - latitude in robot coordinates e.g -21
         # [in] y - longitude in robot coordinates e.g .37
         # [in] value - value which is written to the cell
-        # print(math.floor((self.world_latitude/2+x)/self.cell_size) , math.floor((self.world_longitude/2+y)/self.cell_size))
         if isIndex:
             self.mapa[x][y] = value
             return self
@@ -83,8 +81,6 @@ class world_map:
         # [in] x - latitude in robot coordinates e.g -21
         # [in] y - longitude in robot coordinates e.g .37
         # [out] - value of the cell
-        # print(math.floor((self.world_latitude/2+x)/self.cell_size) , math.floor((self.world_longitude/2+y)/self.cell_size))
-
         if isIndex:
             return self.mapa[x][y]
         else:
@@ -176,7 +172,7 @@ class world_map:
         else:
             return LaserPath
 
-    def updateHitCells(self, data, iter):
+    def updateHitCells(self, data):
 
         global colors
         # function to update log map
@@ -189,14 +185,12 @@ class world_map:
 
         sensorPosition[0] += 0.18 * math.cos(sensorPosition[2])
         sensorPosition[1] += 0.18 * math.sin(sensorPosition[2])
-        # [OK] Sensor position should be okey now.
 
         scanData = self.convertScanData(data['scan'])
         globalPoints = self.getGlobalHitpoints(sensorPosition, scanData)
-
-        print sensorPosition
-        sensorPosition2 = sensorPosition[:]
-
+        # #######################
+        # TODO Delete after tests
+        # #######################
         plt2.scatter([x[0] for x in globalPoints], [x[1] for x in globalPoints], c='blue')
         plt2.scatter(sensorPosition[0], sensorPosition[1], c='red')
         plt2.scatter(tempSensorPosition[0], tempSensorPosition[1], c='green')
@@ -207,6 +201,7 @@ class world_map:
         axes.set_ylim([-4, 4])
         plt2.grid()
         plt2.show()
+        #########################
 
         pathPoints = dict()  # points through which the beam passes
 

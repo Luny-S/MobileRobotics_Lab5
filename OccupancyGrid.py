@@ -53,26 +53,16 @@ if __name__ == '__main__':
     # data = readJSON(inputPath + "map_boxes_0.json")
     # data = readJSON(inputPath + "map_boxes_1.json")
     # data = readJSON(inputPath + "map_round.json")
-    # saveJSON(outputPath + "pointsHitGlobal.JSON", pointsHitGlobal)
+    # data = readJSON(inputPath + "robotWandering_01.JSON")
 
     # for iteration in data:
     #     wm.updateHitCells(iteration)
-
-    #gdzie miedzy 3, a 4 iteracja sie robi blad.
-
-    for i in range(10):
-        wm.updateHitCells(data[i], i)
-    # test = wm.updateHitCells(data[0])
-    # update HitCells można zoptymalizować. Pola, które przecina wiązka, można wyliczać przy pomocy bisekcji.
-    # Szukamy wspolrzednych polowy odleglosci miedzy sensorPos i finalPos. Sprawdzamy tego indeks. Zaznaczamy jako trafione
-    # I dalej dzielimy. Dzielimy tak dlugo, az suma roznic indeksow w pionie i poziomie będzie równa 1
-    # Dzieki temu nie musimy rozwiazywac rownania liniowego
-
-
-
+    for i in range(1):
+        wm.updateHitCells(data[i])
 
     wm.updateProbabilityMap()
     mapa = np.asarray(wm.probabilityMap, dtype=np.float32)
+    # mapa = mapa.transpose()
 
     # Podczas skanowania w ruchu mogą pojawić się opóźnienia między getPose,a getScan, więć mapa może się troche rozjechac.
     # Lepiej np. wziąć pozycje przed skanem, skan, po skanie i estymować pozycję, w której był robiony skan.
