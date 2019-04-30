@@ -33,8 +33,8 @@ class world_map:
         # [in] latitude - world latitude in physical units e.g. 5m
         # [in] cell_size - size of map cell in physical units e.g. 0.1m
         self.cell_size = cell_size
-        self.world_latitude = latitude
         self.world_longitude = longitude
+        self.world_latitude = latitude
 
     def initialize_map(self):
         # function initializing world map with given value
@@ -46,11 +46,12 @@ class world_map:
 
         self.initialProbability = initialProbabilityHit
         self.initialLog = value
-        for i in range(int(math.ceil(self.world_latitude / self.cell_size))):
+
+        for i in range(int(math.ceil(self.world_longitude / self.cell_size))):
             rowLog = []
             rowProb = []
 
-            for j in range(int(math.ceil(self.world_longitude / self.cell_size))):
+            for j in range(int(math.ceil(self.world_latitude / self.cell_size))):
                 rowLog.append(value)
                 rowProb.append(self.initialProbability)
 
@@ -88,17 +89,17 @@ class world_map:
             return self.mapa[index[0]][index[1]]
 
     def get_cell_index(self, x, y):
-        longitude = int(math.ceil(round((float(self.world_longitude) / 2.0 + y) / self.cell_size, 5))) - 1
-        latitude = int(math.ceil(round((float(self.world_latitude) / 2.0 + x) / self.cell_size, 5))) - 1
-        return [latitude, longitude]
+        longitude = int(math.ceil(round((float(self.world_longitude) / 2.0 + x) / self.cell_size, 5))) - 1
+        latitude = int(math.ceil(round((float(self.world_latitude) / 2.0 + y) / self.cell_size, 5))) - 1
+        return [longitude, latitude]
 
     def get_cell_coords(self, ix, iy):
         # longitude = self.world_longitude / 2.0 + iy * self.cell_size
         # latitude = self.world_latitude / 2.0 + ix * self.cell_size
         zeroCoord = self.get_cell_index(0, 0)
-        longitude = (iy - zeroCoord[0]) * self.cell_size
-        latitude = (ix - zeroCoord[1]) * self.cell_size
-        return [latitude, longitude]
+        longitude = (ix - zeroCoord[0]) * self.cell_size
+        latitude = (iy - zeroCoord[1]) * self.cell_size
+        return [longitude, latitude]
 
     def logToProbability(self, logValue):
         return 1 - 1 / (1 + math.exp(logValue))
@@ -110,17 +111,24 @@ class world_map:
         return self.probabilityMap[x][y]
 
     def updateProbabilityMap(self):
-        for latitude in range(len(self.probabilityMap)):
-            for longitude in range(len(self.probabilityMap[latitude])):
-                self.probabilityMap[latitude][longitude] = self.logToProbability(
-                    self.mapa[latitude][longitude])
+        for longitude in range(len(self.probabilityMap)):
+            for latitude in range(len(self.probabilityMap[longitude])):
+                self.probabilityMap[longitude][latitude] = self.logToProbability(
+                    self.mapa[longitude][latitude])
         return self
 
+    # Trochę rzeźba :P Mapa do path planningu powinna chyba dziedziczyć po tej
+    # wziął, zepsuł i się nie przyznaje
     def updateProbabilityMapPlanning(self):
-        for latitude in range(len(self.probabilityMap)):
-            for longitude in range(len(self.probabilityMap[latitude])):
-                self.probabilityMap[latitude][longitude] = self.mapa[latitude][longitude]
+        for longitude in range(len(self.probabilityMap)):
+            for latitude in range(len(self.probabilityMap[longitude])):
+                self.probabilityMap[longitude][latitude] = self.mapa[longitude][latitude]
         return self
+
+    def convertProbabilityMapToNpArray(self):
+        tempMap = np.asarray(self.probabilityMap, dtype=np.float32).transpose()
+        tempMap = np.flipud(tempMap)
+        return tempMap
 
     def inverseSensorModel(self, hit=1):
         prob = 0
@@ -173,7 +181,6 @@ class world_map:
             return LaserPath
 
     def updateHitCells(self, data):
-
         global colors
         # function to update log map
         # [in] data - list of data from one iterations. Has sublists 'pose' and 'scan'.
@@ -191,16 +198,16 @@ class world_map:
         # #######################
         # TODO Delete after tests
         # #######################
-        plt2.scatter([x[0] for x in globalPoints], [x[1] for x in globalPoints], c='blue')
-        plt2.scatter(sensorPosition[0], sensorPosition[1], c='red')
-        plt2.scatter(tempSensorPosition[0], tempSensorPosition[1], c='green')
-        plt2.xlabel('x')
-        plt2.ylabel('y')
-        axes = plt2.gca()
-        axes.set_xlim([-4, 4])
-        axes.set_ylim([-4, 4])
-        plt2.grid()
-        plt2.show()
+        # plt2.scatter([x[0] for x in globalPoints], [x[1] for x in globalPoints], c='blue')
+        # plt2.scatter(sensorPosition[0], sensorPosition[1], c='red')
+        # plt2.scatter(tempSensorPosition[0], tempSensorPosition[1], c='green')
+        # plt2.xlabel('x')
+        # plt2.ylabel('y')
+        # axes = plt2.gca()
+        # axes.set_xlim([-4, 4])
+        # axes.set_ylim([-4, 4])
+        # plt2.grid()
+        # plt2.show()
         #########################
 
         pathPoints = dict()  # points through which the beam passes
