@@ -1,4 +1,3 @@
-
 # 0. Enlarge obstacles by robot radius (/)
 # 1. Check robot position in cell cooordinates
 # 2. Plan path (StartPoint = RobotPosition, GoalPoint = any) (/)
@@ -23,4 +22,3 @@ def ControlRobot(probabilityMap, goalPoint, robotPosition):
 	WaveMap = PathPlanning.blastWave(probabilityMap, startPoint, goalPoint)
 	PathPoints = PathPlanning.findPathPoints(WaveMap, startPoint, goalPoint)
 
-    #3,4,5,6,7,...
