@@ -78,12 +78,12 @@ def enlargeObstacles(probabilityMap):
                             if (probabilityMap.getProbability([cellX + ii, cellY + jj], True) < probabilityThreshold):
                                 if (math.sqrt((ii) ** 2 + (jj) ** 2) <= orthoCellDistance):
                                     probabilityMap.update_map(cellX + ii, cellY + jj, 8, True)
-    probabilityMap.updateProbabilityMap
+    probabilityMap.updateProbabilityMap()
 
 
 def blastWave(probabilityMap, startPoint, goalPoint):
-    goalDistanceMap = world_map(probabilityMap.world_latitude,
-                                probabilityMap.world_longitude,
+    goalDistanceMap = world_map(probabilityMap.world_longitude,
+                                probabilityMap.world_latitude,
                                 probabilityMap.cell_size)
     goalDistanceMap.initialize_map()
 
@@ -250,10 +250,6 @@ def findPathPoints(goalDistanceMap, startPoint, goalPoint):
     return pathPoints
 
 
-def planPath(pathPoints):
-    return polyPath
-
-
 def plotWavePath(WaveMap, pathPoints):
     fig = plt.figure(figsize=(8, 8))
     for i in range(0, len(WaveMap.mapa)):
@@ -275,7 +271,6 @@ def plotWavePath(WaveMap, pathPoints):
                         alpha=pointValue)
 
     npathPoints = np.array(pathPoints)
-    npathPoints[:, 0]
     plt.plot(npathPoints[:, 0], npathPoints[:, 1], 'ro-')
     plt.show()
 
@@ -330,16 +325,23 @@ if __name__ == '__main__':
     wm = world_map(30, 30, 1)
     wm.initialize_map()
 
-    addObstacles(wm)
+    #addObstacles(wm)
+
+
+    wm.update_map(-2, 0, 10)
+    wm.update_map(-2, 1, 10)
+    wm.update_map(-2, 2, 10)
+    wm.update_map(-2, 3, 10)
+    wm.update_map(-2, 4, 10)
 
     wm.updateProbabilityMap()
-
     enlargeObstacles(wm)
 
-    startPoint = [-6, -6]
-    goalPoint = [0, 0]
+    startPoint = [0, 0]
+    goalPoint = [-1, 3]
 
     WaveMap = blastWave(wm, startPoint, goalPoint)
-    PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
 
+    PathPoints = findPathPoints(WaveMap, startPoint, goalPoint)
+    print(PathPoints)
     plotWavePath(WaveMap, PathPoints)
