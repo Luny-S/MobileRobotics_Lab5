@@ -42,7 +42,7 @@ class world_map:
 
         self.initialProbability = initialProbabilityHit
         self.initialLog = value
-
+        self.mapa = []
         for i in range(int(math.ceil(self.world_longitude / self.cell_size))):
             rowLog = []
             rowProb = []

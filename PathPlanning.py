@@ -325,20 +325,13 @@ if __name__ == '__main__':
     wm = world_map(30, 30, 1)
     wm.initialize_map()
 
-    #addObstacles(wm)
-
-
-    wm.update_map(-2, 0, 10)
-    wm.update_map(-2, 1, 10)
-    wm.update_map(-2, 2, 10)
-    wm.update_map(-2, 3, 10)
-    wm.update_map(-2, 4, 10)
+    addObstacles(wm)
 
     wm.updateProbabilityMap()
     enlargeObstacles(wm)
 
     startPoint = [0, 0]
-    goalPoint = [-1, 3]
+    goalPoint = [-11, 3]
 
     WaveMap = blastWave(wm, startPoint, goalPoint)
 
