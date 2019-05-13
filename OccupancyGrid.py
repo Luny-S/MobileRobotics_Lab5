@@ -216,7 +216,7 @@ class world_map:
 
         self.plot.scatter(pointsList[0], pointsList[1], c=pointsList[2], cmap='Blues', marker='s', s=np.sqrt(self.cell_size)*10, alpha=1)
         self.plot.grid(True, 'both')
-        self.plot.show()
+        
 
     def mapToPointsList(self):
         pointsList = [[],[],[]]

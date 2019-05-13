@@ -320,6 +320,10 @@ def addObstacles(wm):
 
     wm.updateProbabilityMap()
 
+def plotPathPoints(pathPoints, plot):
+	npathPoints = np.array(pathPoints)
+	plt.plot(npathPoints[:, 0], npathPoints[:, 1], 'r-')
+
 
 if __name__ == '__main__':
     wm = world_map(30, 30, 1)
