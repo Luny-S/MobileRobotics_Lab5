@@ -207,15 +207,25 @@ class world_map:
         return True
 
     def displayMap(self):
-        map = self.convertProbabilityMapToNpArray()
-        self.plot.imshow(map, interpolation="nearest", cmap='Blues')
+
+        # pathListX = [0, 0 ,1, 1]
+        # pathListY = [0, 1, 1, 0]
+
+
+        pointsList = self.mapToPointsList()
+
+        self.plot.scatter(pointsList[0], pointsList[1], c=pointsList[2], cmap='Blues', marker='s', s=np.sqrt(self.cell_size)*10, alpha=1)
         self.plot.grid(True, 'both')
-        subticks = 10
-        plt.xticks(np.arange(0, len(map[0]) + 1, len(map[0]) / subticks), (round(x * self.cell_size, 2) for x in
-                                                                           np.arange(-len(map[0]) / 2,
-                                                                                     len(map[0]) / 2,
-                                                                                     len(map[0]) / subticks)))
-        plt.yticks(np.arange(len(map) + 1, 0, -len(map) / subticks),
-                   (round(x * self.cell_size, 2) for x in np.arange(-len(map) / 2, len(map) / 2, len(map) / subticks)))
-        self.plot.colorbar()
         self.plot.show()
+
+    def mapToPointsList(self):
+        pointsList = [[],[],[]]
+        for longitude in range(len(self.probabilityMap)):
+            for latitude in range(len(self.probabilityMap[longitude])):
+                if self.probabilityMap[longitude][latitude] != self.initialProbability:
+                    point = self.get_cell_coords(longitude, latitude)
+                    pointsList[0].append(point[0])
+                    pointsList[1].append(point[1])
+                    pointsList[2].append(self.probabilityMap[longitude][latitude])
+
+        return pointsList

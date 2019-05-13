@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
     for iteration in data:
         wm.updateHitCells(iteration)
+
     # for i in range(3):
     #     wm.updateHitCells(data[i])
     wm.displayMap()
